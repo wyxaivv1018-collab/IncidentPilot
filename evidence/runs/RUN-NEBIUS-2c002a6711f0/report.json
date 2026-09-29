@@ -1,0 +1,420 @@
+{
+  "schema_version": "2.0",
+  "run_id": "RUN-NEBIUS-2c002a6711f0",
+  "system": "background-jobs",
+  "mode": "live",
+  "method": "generic",
+  "status": "RESOLVED",
+  "verified": true,
+  "verification": {
+    "evidence_id": "E25",
+    "status": "PASSED",
+    "task_status": "SUCCEEDED",
+    "check": "Worker status plus independently checked current-job output",
+    "result": {
+      "job_id": "cbb1c9631acd4307bf89da898ef65709",
+      "total": 31,
+      "input_sha256": "800d51ad557ce57dcd66cf6b3610bd474ff0a6430ca14797553172b005f0cd7b"
+    }
+  },
+  "summary": {
+    "problem": "The background task was reported as FAILED and its output was missing.",
+    "work_done": "Read the status source which showed task_status: FAILED and output_exists: false. Then performed the retry_task action using that evidence. After the retry, verified recovery which confirmed the task now has status SUCCEEDED and output is present.",
+    "next_step": "No further action needed; the task has successfully recovered.",
+    "attribution": "model interpretation"
+  },
+  "executed_actions": [
+    "retry_task"
+  ],
+  "error": null,
+  "human_steps": 0,
+  "human_steps_definition": "Required operator handoff; not measured human repair effort.",
+  "elapsed_seconds": 13.431,
+  "model_turns": 5,
+  "tool_calls": 5,
+  "cost": {
+    "requests": 5,
+    "estimated_usd": 0.0020493,
+    "unconfirmed_upper_usd": 0,
+    "committed_upper_usd": 0.0020493,
+    "input_tokens": 5667,
+    "output_tokens": 388,
+    "ceiling_usd": 0.8,
+    "remaining_under_ceiling_usd": 0.7979507,
+    "billing_confirmed": false,
+    "price_source": "https://github.com/nebius/token-factory-cookbook/blob/main/agents/agent-cost-comparison-1/agent_cost_comparison_1.py"
+  },
+  "events": [
+    {
+      "id": "E1",
+      "sequence": 1,
+      "run_id": "RUN-NEBIUS-2c002a6711f0",
+      "type": "run.started",
+      "time": "2026-09-28T09:26:39.451189+00:00",
+      "data": {
+        "mode": "live",
+        "method": "generic",
+        "system": "background-jobs",
+        "permission": true
+      }
+    },
+    {
+      "id": "E2",
+      "sequence": 2,
+      "run_id": "RUN-NEBIUS-2c002a6711f0",
+      "type": "model.request",
+      "time": "2026-09-28T09:26:39.467279+00:00",
+      "data": {
+        "request_id": "388b58626d5b47aa9942dd878d19bb5a",
+        "model": "nvidia/nemotron-3-super-120b-a12b",
+        "input_token_bound": 9598,
+        "max_output_tokens": 4096,
+        "upper_usd": 0.0065658,
+        "automatic_retries": 0
+      }
+    },
+    {
+      "id": "E3",
+      "sequence": 3,
+      "run_id": "RUN-NEBIUS-2c002a6711f0",
+      "type": "model.usage",
+      "time": "2026-09-28T09:26:41.312554+00:00",
+      "data": {
+        "request_id": "388b58626d5b47aa9942dd878d19bb5a",
+        "inputTokens": 894,
+        "outputTokens": 26,
+        "totalTokens": 920
+      }
+    },
+    {
+      "id": "E4",
+      "sequence": 4,
+      "run_id": "RUN-NEBIUS-2c002a6711f0",
+      "type": "tool.requested",
+      "time": "2026-09-28T09:26:41.313834+00:00",
+      "data": {
+        "toolUseId": "chatcmpl-tool-96ea4ed1b6c97888",
+        "name": "describe_system",
+        "input": {},
+        "model_turn": 1,
+        "origin": "provider"
+      }
+    },
+    {
+      "id": "E5",
+      "sequence": 5,
+      "run_id": "RUN-NEBIUS-2c002a6711f0",
+      "type": "tool.completed",
+      "time": "2026-09-28T09:26:41.314823+00:00",
+      "data": {
+        "provider_call_id": "chatcmpl-tool-96ea4ed1b6c97888",
+        "error": false
+      }
+    },
+    {
+      "id": "E6",
+      "sequence": 6,
+      "run_id": "RUN-NEBIUS-2c002a6711f0",
+      "type": "model.request",
+      "time": "2026-09-28T09:26:41.319936+00:00",
+      "data": {
+        "request_id": "96994304b2104c5c95cd3a5eb4404e60",
+        "model": "nvidia/nemotron-3-super-120b-a12b",
+        "input_token_bound": 10820,
+        "max_output_tokens": 4096,
+        "upper_usd": 0.0069324,
+        "automatic_retries": 0
+      }
+    },
+    {
+      "id": "E7",
+      "sequence": 7,
+      "run_id": "RUN-NEBIUS-2c002a6711f0",
+      "type": "model.usage",
+      "time": "2026-09-28T09:26:43.096115+00:00",
+      "data": {
+        "request_id": "96994304b2104c5c95cd3a5eb4404e60",
+        "inputTokens": 1010,
+        "outputTokens": 52,
+        "totalTokens": 1062
+      }
+    },
+    {
+      "id": "E8",
+      "sequence": 8,
+      "run_id": "RUN-NEBIUS-2c002a6711f0",
+      "type": "tool.requested",
+      "time": "2026-09-28T09:26:43.097512+00:00",
+      "data": {
+        "toolUseId": "chatcmpl-tool-9594f8aeae2fc2f0",
+        "name": "read_evidence",
+        "input": {
+          "source": "status"
+        },
+        "model_turn": 2,
+        "origin": "provider"
+      }
+    },
+    {
+      "id": "E9",
+      "sequence": 9,
+      "run_id": "RUN-NEBIUS-2c002a6711f0",
+      "type": "evidence.read",
+      "time": "2026-09-28T09:26:43.098479+00:00",
+      "data": {
+        "source": "status",
+        "available": true,
+        "worker_alive": true,
+        "task_status": "FAILED",
+        "output_exists": false
+      }
+    },
+    {
+      "id": "E10",
+      "sequence": 10,
+      "run_id": "RUN-NEBIUS-2c002a6711f0",
+      "type": "tool.completed",
+      "time": "2026-09-28T09:26:43.099435+00:00",
+      "data": {
+        "provider_call_id": "chatcmpl-tool-9594f8aeae2fc2f0",
+        "error": false
+      }
+    },
+    {
+      "id": "E11",
+      "sequence": 11,
+      "run_id": "RUN-NEBIUS-2c002a6711f0",
+      "type": "model.request",
+      "time": "2026-09-28T09:26:43.106923+00:00",
+      "data": {
+        "request_id": "400395b43e33420f8fa3ac7041e4c045",
+        "model": "nvidia/nemotron-3-super-120b-a12b",
+        "input_token_bound": 11598,
+        "max_output_tokens": 4096,
+        "upper_usd": 0.0071658,
+        "automatic_retries": 0
+      }
+    },
+    {
+      "id": "E12",
+      "sequence": 12,
+      "run_id": "RUN-NEBIUS-2c002a6711f0",
+      "type": "model.usage",
+      "time": "2026-09-28T09:26:44.795218+00:00",
+      "data": {
+        "request_id": "400395b43e33420f8fa3ac7041e4c045",
+        "inputTokens": 1088,
+        "outputTokens": 98,
+        "totalTokens": 1186
+      }
+    },
+    {
+      "id": "E13",
+      "sequence": 13,
+      "run_id": "RUN-NEBIUS-2c002a6711f0",
+      "type": "tool.requested",
+      "time": "2026-09-28T09:26:44.796495+00:00",
+      "data": {
+        "toolUseId": "chatcmpl-tool-b1d2aea6b125cb93",
+        "name": "perform_action",
+        "input": {
+          "action": "retry_task",
+          "evidence_ids": [
+            "E9"
+          ],
+          "explanation": "Task reported FAILED and output missing per status evidence."
+        },
+        "model_turn": 3,
+        "origin": "provider"
+      }
+    },
+    {
+      "id": "E14",
+      "sequence": 14,
+      "run_id": "RUN-NEBIUS-2c002a6711f0",
+      "type": "decision.recorded",
+      "time": "2026-09-28T09:26:44.797288+00:00",
+      "data": {
+        "action": "retry_task",
+        "evidence_ids": [
+          "E9"
+        ],
+        "explanation": "Task reported FAILED and output missing per status evidence.",
+        "provider_call_id": "chatcmpl-tool-b1d2aea6b125cb93"
+      }
+    },
+    {
+      "id": "E15",
+      "sequence": 15,
+      "run_id": "RUN-NEBIUS-2c002a6711f0",
+      "type": "action.executed",
+      "time": "2026-09-28T09:26:44.799349+00:00",
+      "data": {
+        "action": "retry_task",
+        "executed": true,
+        "guard_decision": "ALLOW",
+        "guard_reason": "ALLOWED_LOW_RISK_ACTION",
+        "operation_result": {
+          "accepted": true,
+          "operation": "retry_task"
+        },
+        "provider_call_id": "chatcmpl-tool-b1d2aea6b125cb93"
+      }
+    },
+    {
+      "id": "E16",
+      "sequence": 16,
+      "run_id": "RUN-NEBIUS-2c002a6711f0",
+      "type": "tool.completed",
+      "time": "2026-09-28T09:26:44.800207+00:00",
+      "data": {
+        "provider_call_id": "chatcmpl-tool-b1d2aea6b125cb93",
+        "error": false
+      }
+    },
+    {
+      "id": "E17",
+      "sequence": 17,
+      "run_id": "RUN-NEBIUS-2c002a6711f0",
+      "type": "model.request",
+      "time": "2026-09-28T09:26:44.805913+00:00",
+      "data": {
+        "request_id": "485cfe9d36dd443c8a58a4995dfa3887",
+        "model": "nvidia/nemotron-3-super-120b-a12b",
+        "input_token_bound": 12876,
+        "max_output_tokens": 4096,
+        "upper_usd": 0.0075492,
+        "automatic_retries": 0
+      }
+    },
+    {
+      "id": "E18",
+      "sequence": 18,
+      "run_id": "RUN-NEBIUS-2c002a6711f0",
+      "type": "model.usage",
+      "time": "2026-09-28T09:26:50.035529+00:00",
+      "data": {
+        "request_id": "485cfe9d36dd443c8a58a4995dfa3887",
+        "inputTokens": 1245,
+        "outputTokens": 29,
+        "totalTokens": 1274
+      }
+    },
+    {
+      "id": "E19",
+      "sequence": 19,
+      "run_id": "RUN-NEBIUS-2c002a6711f0",
+      "type": "tool.requested",
+      "time": "2026-09-28T09:26:50.037083+00:00",
+      "data": {
+        "toolUseId": "chatcmpl-tool-8aafa9026eaa98f3",
+        "name": "verify_recovery",
+        "input": {},
+        "model_turn": 4,
+        "origin": "provider"
+      }
+    },
+    {
+      "id": "E20",
+      "sequence": 20,
+      "run_id": "RUN-NEBIUS-2c002a6711f0",
+      "type": "verification.result",
+      "time": "2026-09-28T09:26:50.038913+00:00",
+      "data": {
+        "status": "PASSED",
+        "task_status": "SUCCEEDED",
+        "check": "Worker status plus independently checked current-job output",
+        "result": {
+          "job_id": "cbb1c9631acd4307bf89da898ef65709",
+          "total": 31,
+          "input_sha256": "800d51ad557ce57dcd66cf6b3610bd474ff0a6430ca14797553172b005f0cd7b"
+        }
+      }
+    },
+    {
+      "id": "E21",
+      "sequence": 21,
+      "run_id": "RUN-NEBIUS-2c002a6711f0",
+      "type": "tool.completed",
+      "time": "2026-09-28T09:26:50.040321+00:00",
+      "data": {
+        "provider_call_id": "chatcmpl-tool-8aafa9026eaa98f3",
+        "error": false
+      }
+    },
+    {
+      "id": "E22",
+      "sequence": 22,
+      "run_id": "RUN-NEBIUS-2c002a6711f0",
+      "type": "model.request",
+      "time": "2026-09-28T09:26:50.047692+00:00",
+      "data": {
+        "request_id": "3b8a6397169641c984913e974cadc8cf",
+        "model": "nvidia/nemotron-3-super-120b-a12b",
+        "input_token_bound": 14014,
+        "max_output_tokens": 4096,
+        "upper_usd": 0.007890600000000001,
+        "automatic_retries": 0
+      }
+    },
+    {
+      "id": "E23",
+      "sequence": 23,
+      "run_id": "RUN-NEBIUS-2c002a6711f0",
+      "type": "model.usage",
+      "time": "2026-09-28T09:26:52.872285+00:00",
+      "data": {
+        "request_id": "3b8a6397169641c984913e974cadc8cf",
+        "inputTokens": 1430,
+        "outputTokens": 183,
+        "totalTokens": 1613
+      }
+    },
+    {
+      "id": "E24",
+      "sequence": 24,
+      "run_id": "RUN-NEBIUS-2c002a6711f0",
+      "type": "tool.requested",
+      "time": "2026-09-28T09:26:52.874315+00:00",
+      "data": {
+        "toolUseId": "chatcmpl-tool-89684794a78a4bd0",
+        "name": "finish_report",
+        "input": {
+          "problem": "The background task was reported as FAILED and its output was missing.",
+          "work_done": "Read the status source which showed task_status: FAILED and output_exists: false. Then performed the retry_task action using that evidence. After the retry, verified recovery which confirmed the task now has status SUCCEEDED and output is present.",
+          "next_step": "No further action needed; the task has successfully recovered."
+        },
+        "model_turn": 5,
+        "origin": "provider"
+      }
+    },
+    {
+      "id": "E25",
+      "sequence": 25,
+      "run_id": "RUN-NEBIUS-2c002a6711f0",
+      "type": "verification.result",
+      "time": "2026-09-28T09:26:52.876265+00:00",
+      "data": {
+        "status": "PASSED",
+        "task_status": "SUCCEEDED",
+        "check": "Worker status plus independently checked current-job output",
+        "result": {
+          "job_id": "cbb1c9631acd4307bf89da898ef65709",
+          "total": 31,
+          "input_sha256": "800d51ad557ce57dcd66cf6b3610bd474ff0a6430ca14797553172b005f0cd7b"
+        }
+      }
+    },
+    {
+      "id": "E26",
+      "sequence": 26,
+      "run_id": "RUN-NEBIUS-2c002a6711f0",
+      "type": "tool.completed",
+      "time": "2026-09-28T09:26:52.878025+00:00",
+      "data": {
+        "provider_call_id": "chatcmpl-tool-89684794a78a4bd0",
+        "error": false
+      }
+    }
+  ]
+}

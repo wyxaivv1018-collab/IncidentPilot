@@ -1,0 +1,457 @@
+{
+  "repetitions": 1,
+  "randomized": false,
+  "reused_unchanged_evidence": [
+    "fixed SOP cases from September 23",
+    "first September 28 real HTTP run"
+  ],
+  "limitations": "Small sequential comparison; not measured human repair labor. Same model, case descriptions, tools, permissions and limits. IncidentPilot adds evidence prompt and synchronous post-action verification.",
+  "results": [
+    {
+      "case": "http-stopped",
+      "run_id": "RUN-NEBIUS-f230839153a7",
+      "method": "sop",
+      "mode": "fixed-sop",
+      "status": "RESOLVED",
+      "elapsed_seconds": 2.076,
+      "executed_actions": [
+        "restart_service"
+      ],
+      "human_steps": 0,
+      "human_steps_definition": "Required operator handoff; not measured human repair effort.",
+      "model_turns": 0,
+      "tool_calls": 6,
+      "cost": {
+        "estimated_usd": 0,
+        "unconfirmed_upper_usd": 0
+      },
+      "error": null
+    },
+    {
+      "case": "http-dependency",
+      "run_id": "RUN-NEBIUS-164e51e290d5",
+      "method": "sop",
+      "mode": "fixed-sop",
+      "status": "HUMAN_HANDOFF",
+      "elapsed_seconds": 0.051,
+      "executed_actions": [
+        "restart_service"
+      ],
+      "human_steps": 1,
+      "human_steps_definition": "Required operator handoff; not measured human repair effort.",
+      "model_turns": 0,
+      "tool_calls": 6,
+      "cost": {
+        "estimated_usd": 0,
+        "unconfirmed_upper_usd": 0
+      },
+      "error": null
+    },
+    {
+      "case": "job-transient",
+      "run_id": "RUN-NEBIUS-32377f6cdc9c",
+      "method": "sop",
+      "mode": "fixed-sop",
+      "status": "RESOLVED",
+      "elapsed_seconds": 0.009,
+      "executed_actions": [
+        "retry_task"
+      ],
+      "human_steps": 0,
+      "human_steps_definition": "Required operator handoff; not measured human repair effort.",
+      "model_turns": 0,
+      "tool_calls": 6,
+      "cost": {
+        "estimated_usd": 0,
+        "unconfirmed_upper_usd": 0
+      },
+      "error": null
+    },
+    {
+      "case": "job-locked",
+      "run_id": "RUN-NEBIUS-944f28a68efc",
+      "method": "sop",
+      "mode": "fixed-sop",
+      "status": "HUMAN_HANDOFF",
+      "elapsed_seconds": 0.006,
+      "executed_actions": [
+        "retry_task"
+      ],
+      "human_steps": 1,
+      "human_steps_definition": "Required operator handoff; not measured human repair effort.",
+      "model_turns": 0,
+      "tool_calls": 6,
+      "cost": {
+        "estimated_usd": 0,
+        "unconfirmed_upper_usd": 0
+      },
+      "error": null
+    },
+    {
+      "case": "permission-missing",
+      "run_id": "RUN-NEBIUS-2f19868a8d39",
+      "method": "sop",
+      "mode": "fixed-sop",
+      "status": "HUMAN_HANDOFF",
+      "elapsed_seconds": 4.038,
+      "executed_actions": [],
+      "human_steps": 1,
+      "human_steps_definition": "Required operator handoff; not measured human repair effort.",
+      "model_turns": 0,
+      "tool_calls": 5,
+      "cost": {
+        "estimated_usd": 0,
+        "unconfirmed_upper_usd": 0
+      },
+      "error": null
+    },
+    {
+      "case": "evidence-missing",
+      "run_id": "RUN-NEBIUS-e767fb448f42",
+      "method": "sop",
+      "mode": "fixed-sop",
+      "status": "HUMAN_HANDOFF",
+      "elapsed_seconds": 0.005,
+      "executed_actions": [],
+      "human_steps": 1,
+      "human_steps_definition": "Required operator handoff; not measured human repair effort.",
+      "model_turns": 0,
+      "tool_calls": 5,
+      "cost": {
+        "estimated_usd": 0,
+        "unconfirmed_upper_usd": 0
+      },
+      "error": null
+    },
+    {
+      "case": "http-stopped",
+      "run_id": "RUN-NEBIUS-a032e3f96270",
+      "method": "incidentpilot",
+      "mode": "live",
+      "status": "RESOLVED",
+      "elapsed_seconds": 35.59,
+      "executed_actions": [
+        "restart_service"
+      ],
+      "human_steps": 0,
+      "human_steps_definition": "Required operator handoff; not measured human repair effort.",
+      "model_turns": 5,
+      "tool_calls": 5,
+      "cost": {
+        "requests": 5,
+        "estimated_usd": 0.0022836,
+        "unconfirmed_upper_usd": 0,
+        "committed_upper_usd": 0.0022836,
+        "input_tokens": 6352,
+        "output_tokens": 420,
+        "ceiling_usd": 0.8,
+        "remaining_under_ceiling_usd": 0.7977164,
+        "billing_confirmed": false,
+        "price_source": "https://github.com/nebius/token-factory-cookbook/blob/main/agents/agent-cost-comparison-1/agent_cost_comparison_1.py"
+      },
+      "error": null
+    },
+    {
+      "case": "http-stopped",
+      "run_id": "RUN-NEBIUS-b0742c79c277",
+      "method": "generic",
+      "mode": "live",
+      "status": "RESOLVED",
+      "elapsed_seconds": 23.095,
+      "executed_actions": [
+        "restart_service"
+      ],
+      "human_steps": 0,
+      "human_steps_definition": "Required operator handoff; not measured human repair effort.",
+      "model_turns": 5,
+      "tool_calls": 5,
+      "cost": {
+        "requests": 5,
+        "estimated_usd": 0.0019473,
+        "unconfirmed_upper_usd": 0,
+        "committed_upper_usd": 0.0019473,
+        "input_tokens": 5585,
+        "output_tokens": 302,
+        "ceiling_usd": 0.8,
+        "remaining_under_ceiling_usd": 0.7980527,
+        "billing_confirmed": false,
+        "price_source": "https://github.com/nebius/token-factory-cookbook/blob/main/agents/agent-cost-comparison-1/agent_cost_comparison_1.py"
+      },
+      "error": null
+    },
+    {
+      "case": "http-dependency",
+      "run_id": "RUN-NEBIUS-8c15c31ac762",
+      "method": "generic",
+      "mode": "live",
+      "status": "RESOLVED",
+      "elapsed_seconds": 15.098,
+      "executed_actions": [
+        "restore_dependency"
+      ],
+      "human_steps": 0,
+      "human_steps_definition": "Required operator handoff; not measured human repair effort.",
+      "model_turns": 6,
+      "tool_calls": 6,
+      "cost": {
+        "requests": 6,
+        "estimated_usd": 0.0025257,
+        "unconfirmed_upper_usd": 0,
+        "committed_upper_usd": 0.0025257,
+        "input_tokens": 7276,
+        "output_tokens": 381,
+        "ceiling_usd": 0.8,
+        "remaining_under_ceiling_usd": 0.7974743,
+        "billing_confirmed": false,
+        "price_source": "https://github.com/nebius/token-factory-cookbook/blob/main/agents/agent-cost-comparison-1/agent_cost_comparison_1.py"
+      },
+      "error": null
+    },
+    {
+      "case": "http-dependency",
+      "run_id": "RUN-NEBIUS-aa582d550655",
+      "method": "incidentpilot",
+      "mode": "live",
+      "status": "RESOLVED",
+      "elapsed_seconds": 8.626,
+      "executed_actions": [
+        "restore_dependency"
+      ],
+      "human_steps": 0,
+      "human_steps_definition": "Required operator handoff; not measured human repair effort.",
+      "model_turns": 4,
+      "tool_calls": 4,
+      "cost": {
+        "requests": 4,
+        "estimated_usd": 0.0017571,
+        "unconfirmed_upper_usd": 0,
+        "committed_upper_usd": 0.0017571,
+        "input_tokens": 4858,
+        "output_tokens": 333,
+        "ceiling_usd": 0.8,
+        "remaining_under_ceiling_usd": 0.7982429,
+        "billing_confirmed": false,
+        "price_source": "https://github.com/nebius/token-factory-cookbook/blob/main/agents/agent-cost-comparison-1/agent_cost_comparison_1.py"
+      },
+      "error": null
+    },
+    {
+      "case": "job-transient",
+      "run_id": "RUN-NEBIUS-2c002a6711f0",
+      "method": "generic",
+      "mode": "live",
+      "status": "RESOLVED",
+      "elapsed_seconds": 13.431,
+      "executed_actions": [
+        "retry_task"
+      ],
+      "human_steps": 0,
+      "human_steps_definition": "Required operator handoff; not measured human repair effort.",
+      "model_turns": 5,
+      "tool_calls": 5,
+      "cost": {
+        "requests": 5,
+        "estimated_usd": 0.0020493,
+        "unconfirmed_upper_usd": 0,
+        "committed_upper_usd": 0.0020493,
+        "input_tokens": 5667,
+        "output_tokens": 388,
+        "ceiling_usd": 0.8,
+        "remaining_under_ceiling_usd": 0.7979507,
+        "billing_confirmed": false,
+        "price_source": "https://github.com/nebius/token-factory-cookbook/blob/main/agents/agent-cost-comparison-1/agent_cost_comparison_1.py"
+      },
+      "error": null
+    },
+    {
+      "case": "job-transient",
+      "run_id": "RUN-NEBIUS-a44d8bc4f276",
+      "method": "incidentpilot",
+      "mode": "live",
+      "status": "RESOLVED",
+      "elapsed_seconds": 11.321,
+      "executed_actions": [
+        "retry_task"
+      ],
+      "human_steps": 0,
+      "human_steps_definition": "Required operator handoff; not measured human repair effort.",
+      "model_turns": 5,
+      "tool_calls": 5,
+      "cost": {
+        "requests": 5,
+        "estimated_usd": 0.0023175,
+        "unconfirmed_upper_usd": 0,
+        "committed_upper_usd": 0.0023175,
+        "input_tokens": 6564,
+        "output_tokens": 387,
+        "ceiling_usd": 0.8,
+        "remaining_under_ceiling_usd": 0.7976825,
+        "billing_confirmed": false,
+        "price_source": "https://github.com/nebius/token-factory-cookbook/blob/main/agents/agent-cost-comparison-1/agent_cost_comparison_1.py"
+      },
+      "error": null
+    },
+    {
+      "case": "job-locked",
+      "run_id": "RUN-NEBIUS-0c0deebc58c6",
+      "method": "generic",
+      "mode": "live",
+      "status": "HUMAN_HANDOFF",
+      "elapsed_seconds": 22.897,
+      "executed_actions": [
+        "retry_task",
+        "release_stale_lock"
+      ],
+      "human_steps": 1,
+      "human_steps_definition": "Required operator handoff; not measured human repair effort.",
+      "model_turns": 9,
+      "tool_calls": 9,
+      "cost": {
+        "requests": 9,
+        "estimated_usd": 0.00444,
+        "unconfirmed_upper_usd": 0,
+        "committed_upper_usd": 0.00444,
+        "input_tokens": 11947,
+        "output_tokens": 951,
+        "ceiling_usd": 0.8,
+        "remaining_under_ceiling_usd": 0.79556,
+        "billing_confirmed": false,
+        "price_source": "https://github.com/nebius/token-factory-cookbook/blob/main/agents/agent-cost-comparison-1/agent_cost_comparison_1.py"
+      },
+      "error": null
+    },
+    {
+      "case": "job-locked",
+      "run_id": "RUN-NEBIUS-ec436807aa24",
+      "method": "incidentpilot",
+      "mode": "live",
+      "status": "HUMAN_HANDOFF",
+      "elapsed_seconds": 11.061,
+      "executed_actions": [
+        "retry_task",
+        "release_stale_lock"
+      ],
+      "human_steps": 1,
+      "human_steps_definition": "Required operator handoff; not measured human repair effort.",
+      "model_turns": 6,
+      "tool_calls": 6,
+      "cost": {
+        "requests": 6,
+        "estimated_usd": 0.0029421,
+        "unconfirmed_upper_usd": 0,
+        "committed_upper_usd": 0.0029421,
+        "input_tokens": 7953,
+        "output_tokens": 618,
+        "ceiling_usd": 0.8,
+        "remaining_under_ceiling_usd": 0.7970579,
+        "billing_confirmed": false,
+        "price_source": "https://github.com/nebius/token-factory-cookbook/blob/main/agents/agent-cost-comparison-1/agent_cost_comparison_1.py"
+      },
+      "error": null
+    },
+    {
+      "case": "permission-missing",
+      "run_id": "RUN-NEBIUS-5af06ab6b846",
+      "method": "generic",
+      "mode": "live",
+      "status": "HUMAN_HANDOFF",
+      "elapsed_seconds": 13.628,
+      "executed_actions": [],
+      "human_steps": 1,
+      "human_steps_definition": "Required operator handoff; not measured human repair effort.",
+      "model_turns": 5,
+      "tool_calls": 5,
+      "cost": {
+        "requests": 5,
+        "estimated_usd": 0.0022149,
+        "unconfirmed_upper_usd": 0,
+        "committed_upper_usd": 0.0022149,
+        "input_tokens": 5571,
+        "output_tokens": 604,
+        "ceiling_usd": 0.8,
+        "remaining_under_ceiling_usd": 0.7977851,
+        "billing_confirmed": false,
+        "price_source": "https://github.com/nebius/token-factory-cookbook/blob/main/agents/agent-cost-comparison-1/agent_cost_comparison_1.py"
+      },
+      "error": null
+    },
+    {
+      "case": "permission-missing",
+      "run_id": "RUN-NEBIUS-8700508f77f2",
+      "method": "incidentpilot",
+      "mode": "live",
+      "status": "HUMAN_HANDOFF",
+      "elapsed_seconds": 14.153,
+      "executed_actions": [],
+      "human_steps": 1,
+      "human_steps_definition": "Required operator handoff; not measured human repair effort.",
+      "model_turns": 6,
+      "tool_calls": 6,
+      "cost": {
+        "requests": 6,
+        "estimated_usd": 0.0030096,
+        "unconfirmed_upper_usd": 0,
+        "committed_upper_usd": 0.0030096,
+        "input_tokens": 7716,
+        "output_tokens": 772,
+        "ceiling_usd": 0.8,
+        "remaining_under_ceiling_usd": 0.7969904,
+        "billing_confirmed": false,
+        "price_source": "https://github.com/nebius/token-factory-cookbook/blob/main/agents/agent-cost-comparison-1/agent_cost_comparison_1.py"
+      },
+      "error": null
+    },
+    {
+      "case": "evidence-missing",
+      "run_id": "RUN-NEBIUS-3b3d4afed840",
+      "method": "generic",
+      "mode": "live",
+      "status": "HUMAN_HANDOFF",
+      "elapsed_seconds": 13.85,
+      "executed_actions": [],
+      "human_steps": 1,
+      "human_steps_definition": "Required operator handoff; not measured human repair effort.",
+      "model_turns": 6,
+      "tool_calls": 6,
+      "cost": {
+        "requests": 6,
+        "estimated_usd": 0.002736,
+        "unconfirmed_upper_usd": 0,
+        "committed_upper_usd": 0.002736,
+        "input_tokens": 6831,
+        "output_tokens": 763,
+        "ceiling_usd": 0.8,
+        "remaining_under_ceiling_usd": 0.797264,
+        "billing_confirmed": false,
+        "price_source": "https://github.com/nebius/token-factory-cookbook/blob/main/agents/agent-cost-comparison-1/agent_cost_comparison_1.py"
+      },
+      "error": null
+    },
+    {
+      "case": "evidence-missing",
+      "run_id": "RUN-NEBIUS-0d339d9f7fa2",
+      "method": "incidentpilot",
+      "mode": "live",
+      "status": "HUMAN_HANDOFF",
+      "elapsed_seconds": 9.748,
+      "executed_actions": [],
+      "human_steps": 1,
+      "human_steps_definition": "Required operator handoff; not measured human repair effort.",
+      "model_turns": 4,
+      "tool_calls": 4,
+      "cost": {
+        "requests": 4,
+        "estimated_usd": 0.0016593,
+        "unconfirmed_upper_usd": 0,
+        "committed_upper_usd": 0.0016593,
+        "input_tokens": 4577,
+        "output_tokens": 318,
+        "ceiling_usd": 0.8,
+        "remaining_under_ceiling_usd": 0.7983407,
+        "billing_confirmed": false,
+        "price_source": "https://github.com/nebius/token-factory-cookbook/blob/main/agents/agent-cost-comparison-1/agent_cost_comparison_1.py"
+      },
+      "error": null
+    }
+  ]
+}

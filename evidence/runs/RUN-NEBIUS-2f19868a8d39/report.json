@@ -1,0 +1,109 @@
+{
+  "schema_version": "2.0",
+  "run_id": "RUN-NEBIUS-2f19868a8d39",
+  "system": "http-app",
+  "mode": "fixed-sop",
+  "method": "sop",
+  "status": "HUMAN_HANDOFF",
+  "verified": false,
+  "verification": {
+    "evidence_id": "E5",
+    "status": "FAILED",
+    "check": "Fresh HTTP GET /business; status, instance and catalog content",
+    "http_status": null,
+    "error": "connection unavailable"
+  },
+  "summary": {
+    "problem": "Fixed SOP inspection; consult attached status and logs.",
+    "work_done": "Standard recovery attempted where evidence and permission allowed.",
+    "next_step": "Ask an operator to inspect the attached evidence and choose the next action.",
+    "attribution": "fixed-sop"
+  },
+  "executed_actions": [],
+  "error": null,
+  "human_steps": 1,
+  "human_steps_definition": "Required operator handoff; not measured human repair effort.",
+  "elapsed_seconds": 4.038,
+  "model_turns": 0,
+  "tool_calls": 5,
+  "cost": {
+    "estimated_usd": 0,
+    "unconfirmed_upper_usd": 0
+  },
+  "events": [
+    {
+      "id": "E1",
+      "sequence": 1,
+      "run_id": "RUN-NEBIUS-2f19868a8d39",
+      "type": "run.started",
+      "time": "2026-09-23T07:05:14.543077+00:00",
+      "data": {
+        "mode": "fixed-sop",
+        "method": "sop",
+        "system": "http-app",
+        "permission": false
+      }
+    },
+    {
+      "id": "E2",
+      "sequence": 2,
+      "run_id": "RUN-NEBIUS-2f19868a8d39",
+      "type": "evidence.read",
+      "time": "2026-09-23T07:05:15.546811+00:00",
+      "data": {
+        "source": "status",
+        "available": true,
+        "listener_running": false,
+        "business_request": {
+          "http_status": null,
+          "error": "connection unavailable"
+        }
+      }
+    },
+    {
+      "id": "E3",
+      "sequence": 3,
+      "run_id": "RUN-NEBIUS-2f19868a8d39",
+      "type": "evidence.read",
+      "time": "2026-09-23T07:05:16.561243+00:00",
+      "data": {
+        "source": "logs",
+        "available": true,
+        "lines": [
+          "HTTP listener started on owned loopback endpoint.",
+          "Listener stopped; application process is not accepting connections."
+        ],
+        "request": {
+          "http_status": null,
+          "error": "connection unavailable"
+        }
+      }
+    },
+    {
+      "id": "E4",
+      "sequence": 4,
+      "run_id": "RUN-NEBIUS-2f19868a8d39",
+      "type": "verification.result",
+      "time": "2026-09-23T07:05:17.578086+00:00",
+      "data": {
+        "status": "FAILED",
+        "check": "Fresh HTTP GET /business; status, instance and catalog content",
+        "http_status": null,
+        "error": "connection unavailable"
+      }
+    },
+    {
+      "id": "E5",
+      "sequence": 5,
+      "run_id": "RUN-NEBIUS-2f19868a8d39",
+      "type": "verification.result",
+      "time": "2026-09-23T07:05:18.579476+00:00",
+      "data": {
+        "status": "FAILED",
+        "check": "Fresh HTTP GET /business; status, instance and catalog content",
+        "http_status": null,
+        "error": "connection unavailable"
+      }
+    }
+  ]
+}

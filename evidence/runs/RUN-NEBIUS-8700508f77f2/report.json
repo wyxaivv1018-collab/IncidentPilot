@@ -1,0 +1,502 @@
+{
+  "schema_version": "2.0",
+  "run_id": "RUN-NEBIUS-8700508f77f2",
+  "system": "http-app",
+  "mode": "live",
+  "method": "incidentpilot",
+  "status": "HUMAN_HANDOFF",
+  "verified": false,
+  "verification": {
+    "evidence_id": "E31",
+    "status": "FAILED",
+    "check": "Fresh HTTP GET /business; status, instance and catalog content",
+    "http_status": null,
+    "error": "connection unavailable"
+  },
+  "summary": {
+    "problem": "The HTTP listener is not running (listener_running: false) and logs show it started then stopped, leading to connection unavailable errors.",
+    "work_done": "Read status evidence (E9) showing listener not running and business request error. Read logs evidence (E26) showing listener started then stopped.",
+    "next_step": "Since the connector lacks mutation permissions, a human operator must manually restart the HTTP service or restore its local catalog dependency on the owned test resource.",
+    "attribution": "model interpretation"
+  },
+  "executed_actions": [],
+  "error": null,
+  "human_steps": 1,
+  "human_steps_definition": "Required operator handoff; not measured human repair effort.",
+  "elapsed_seconds": 14.153,
+  "model_turns": 6,
+  "tool_calls": 6,
+  "cost": {
+    "requests": 6,
+    "estimated_usd": 0.0030096,
+    "unconfirmed_upper_usd": 0,
+    "committed_upper_usd": 0.0030096,
+    "input_tokens": 7716,
+    "output_tokens": 772,
+    "ceiling_usd": 0.8,
+    "remaining_under_ceiling_usd": 0.7969904,
+    "billing_confirmed": false,
+    "price_source": "https://github.com/nebius/token-factory-cookbook/blob/main/agents/agent-cost-comparison-1/agent_cost_comparison_1.py"
+  },
+  "events": [
+    {
+      "id": "E1",
+      "sequence": 1,
+      "run_id": "RUN-NEBIUS-8700508f77f2",
+      "type": "run.started",
+      "time": "2026-09-28T09:27:51.884816+00:00",
+      "data": {
+        "mode": "live",
+        "method": "incidentpilot",
+        "system": "http-app",
+        "permission": false
+      }
+    },
+    {
+      "id": "E2",
+      "sequence": 2,
+      "run_id": "RUN-NEBIUS-8700508f77f2",
+      "type": "model.request",
+      "time": "2026-09-28T09:27:51.905240+00:00",
+      "data": {
+        "request_id": "ef05cb7cfd324b7b9406fb2f4e4f03a0",
+        "model": "nvidia/nemotron-3-super-120b-a12b",
+        "input_token_bound": 10700,
+        "max_output_tokens": 4096,
+        "upper_usd": 0.0068964,
+        "automatic_retries": 0
+      }
+    },
+    {
+      "id": "E3",
+      "sequence": 3,
+      "run_id": "RUN-NEBIUS-8700508f77f2",
+      "type": "model.usage",
+      "time": "2026-09-28T09:27:53.194067+00:00",
+      "data": {
+        "request_id": "ef05cb7cfd324b7b9406fb2f4e4f03a0",
+        "inputTokens": 1001,
+        "outputTokens": 26,
+        "totalTokens": 1027
+      }
+    },
+    {
+      "id": "E4",
+      "sequence": 4,
+      "run_id": "RUN-NEBIUS-8700508f77f2",
+      "type": "tool.requested",
+      "time": "2026-09-28T09:27:53.196165+00:00",
+      "data": {
+        "toolUseId": "chatcmpl-tool-8dce2c64fd5c4b24",
+        "name": "describe_system",
+        "input": {},
+        "model_turn": 1,
+        "origin": "provider"
+      }
+    },
+    {
+      "id": "E5",
+      "sequence": 5,
+      "run_id": "RUN-NEBIUS-8700508f77f2",
+      "type": "tool.completed",
+      "time": "2026-09-28T09:27:53.197551+00:00",
+      "data": {
+        "provider_call_id": "chatcmpl-tool-8dce2c64fd5c4b24",
+        "error": false
+      }
+    },
+    {
+      "id": "E6",
+      "sequence": 6,
+      "run_id": "RUN-NEBIUS-8700508f77f2",
+      "type": "model.request",
+      "time": "2026-09-28T09:27:53.206403+00:00",
+      "data": {
+        "request_id": "4a91d9414f784cbfbeb6e646a8e1a20e",
+        "model": "nvidia/nemotron-3-super-120b-a12b",
+        "input_token_bound": 11928,
+        "max_output_tokens": 4096,
+        "upper_usd": 0.0072648,
+        "automatic_retries": 0
+      }
+    },
+    {
+      "id": "E7",
+      "sequence": 7,
+      "run_id": "RUN-NEBIUS-8700508f77f2",
+      "type": "model.usage",
+      "time": "2026-09-28T09:27:54.664458+00:00",
+      "data": {
+        "request_id": "4a91d9414f784cbfbeb6e646a8e1a20e",
+        "inputTokens": 1111,
+        "outputTokens": 39,
+        "totalTokens": 1150
+      }
+    },
+    {
+      "id": "E8",
+      "sequence": 8,
+      "run_id": "RUN-NEBIUS-8700508f77f2",
+      "type": "tool.requested",
+      "time": "2026-09-28T09:27:54.666226+00:00",
+      "data": {
+        "toolUseId": "chatcmpl-tool-a60963e23afaee4f",
+        "name": "read_evidence",
+        "input": {
+          "source": "status"
+        },
+        "model_turn": 2,
+        "origin": "provider"
+      }
+    },
+    {
+      "id": "E9",
+      "sequence": 9,
+      "run_id": "RUN-NEBIUS-8700508f77f2",
+      "type": "evidence.read",
+      "time": "2026-09-28T09:27:55.670008+00:00",
+      "data": {
+        "source": "status",
+        "available": true,
+        "listener_running": false,
+        "business_request": {
+          "http_status": null,
+          "error": "connection unavailable"
+        }
+      }
+    },
+    {
+      "id": "E10",
+      "sequence": 10,
+      "run_id": "RUN-NEBIUS-8700508f77f2",
+      "type": "tool.completed",
+      "time": "2026-09-28T09:27:55.672201+00:00",
+      "data": {
+        "provider_call_id": "chatcmpl-tool-a60963e23afaee4f",
+        "error": false
+      }
+    },
+    {
+      "id": "E11",
+      "sequence": 11,
+      "run_id": "RUN-NEBIUS-8700508f77f2",
+      "type": "model.request",
+      "time": "2026-09-28T09:27:55.680976+00:00",
+      "data": {
+        "request_id": "551ed51affdb4eff9325003647f9bb0d",
+        "model": "nvidia/nemotron-3-super-120b-a12b",
+        "input_token_bound": 12778,
+        "max_output_tokens": 4096,
+        "upper_usd": 0.007519799999999999,
+        "automatic_retries": 0
+      }
+    },
+    {
+      "id": "E12",
+      "sequence": 12,
+      "run_id": "RUN-NEBIUS-8700508f77f2",
+      "type": "model.usage",
+      "time": "2026-09-28T09:27:57.515286+00:00",
+      "data": {
+        "request_id": "551ed51affdb4eff9325003647f9bb0d",
+        "inputTokens": 1194,
+        "outputTokens": 110,
+        "totalTokens": 1304
+      }
+    },
+    {
+      "id": "E13",
+      "sequence": 13,
+      "run_id": "RUN-NEBIUS-8700508f77f2",
+      "type": "tool.requested",
+      "time": "2026-09-28T09:27:57.516761+00:00",
+      "data": {
+        "toolUseId": "chatcmpl-tool-9d20dbbec461734c",
+        "name": "perform_action",
+        "input": {
+          "action": "restart_service",
+          "evidence_ids": [
+            "E9"
+          ],
+          "explanation": "Listener is not running (listener_running: false) causing connection unavailable error."
+        },
+        "model_turn": 3,
+        "origin": "provider"
+      }
+    },
+    {
+      "id": "E14",
+      "sequence": 14,
+      "run_id": "RUN-NEBIUS-8700508f77f2",
+      "type": "decision.recorded",
+      "time": "2026-09-28T09:27:57.517576+00:00",
+      "data": {
+        "action": "restart_service",
+        "evidence_ids": [
+          "E9"
+        ],
+        "explanation": "Listener is not running (listener_running: false) causing connection unavailable error.",
+        "provider_call_id": "chatcmpl-tool-9d20dbbec461734c"
+      }
+    },
+    {
+      "id": "E15",
+      "sequence": 15,
+      "run_id": "RUN-NEBIUS-8700508f77f2",
+      "type": "action.denied",
+      "time": "2026-09-28T09:27:57.518282+00:00",
+      "data": {
+        "action": "restart_service",
+        "executed": false,
+        "guard_decision": "BLOCK",
+        "guard_reason": "UNKNOWN_ACTION",
+        "operation_result": null,
+        "provider_call_id": "chatcmpl-tool-9d20dbbec461734c"
+      }
+    },
+    {
+      "id": "E16",
+      "sequence": 16,
+      "run_id": "RUN-NEBIUS-8700508f77f2",
+      "type": "tool.completed",
+      "time": "2026-09-28T09:27:57.519097+00:00",
+      "data": {
+        "provider_call_id": "chatcmpl-tool-9d20dbbec461734c",
+        "error": false
+      }
+    },
+    {
+      "id": "E17",
+      "sequence": 17,
+      "run_id": "RUN-NEBIUS-8700508f77f2",
+      "type": "model.request",
+      "time": "2026-09-28T09:27:57.525457+00:00",
+      "data": {
+        "request_id": "5506bbefba65404ab54562f353f340c7",
+        "model": "nvidia/nemotron-3-super-120b-a12b",
+        "input_token_bound": 14020,
+        "max_output_tokens": 4096,
+        "upper_usd": 0.007892399999999999,
+        "automatic_retries": 0
+      }
+    },
+    {
+      "id": "E18",
+      "sequence": 18,
+      "run_id": "RUN-NEBIUS-8700508f77f2",
+      "type": "model.usage",
+      "time": "2026-09-28T09:27:59.835714+00:00",
+      "data": {
+        "request_id": "5506bbefba65404ab54562f353f340c7",
+        "inputTokens": 1342,
+        "outputTokens": 187,
+        "totalTokens": 1529
+      }
+    },
+    {
+      "id": "E19",
+      "sequence": 19,
+      "run_id": "RUN-NEBIUS-8700508f77f2",
+      "type": "tool.requested",
+      "time": "2026-09-28T09:27:59.837687+00:00",
+      "data": {
+        "toolUseId": "chatcmpl-tool-978f313e423ba405",
+        "name": "perform_action",
+        "input": {
+          "action": "restore_dependency",
+          "evidence_ids": [
+            "E9"
+          ],
+          "explanation": "Dependency may be missing causing listener failure."
+        },
+        "model_turn": 4,
+        "origin": "provider"
+      }
+    },
+    {
+      "id": "E20",
+      "sequence": 20,
+      "run_id": "RUN-NEBIUS-8700508f77f2",
+      "type": "decision.recorded",
+      "time": "2026-09-28T09:27:59.838680+00:00",
+      "data": {
+        "action": "restore_dependency",
+        "evidence_ids": [
+          "E9"
+        ],
+        "explanation": "Dependency may be missing causing listener failure.",
+        "provider_call_id": "chatcmpl-tool-978f313e423ba405"
+      }
+    },
+    {
+      "id": "E21",
+      "sequence": 21,
+      "run_id": "RUN-NEBIUS-8700508f77f2",
+      "type": "action.denied",
+      "time": "2026-09-28T09:27:59.839634+00:00",
+      "data": {
+        "action": "restore_dependency",
+        "executed": false,
+        "guard_decision": "BLOCK",
+        "guard_reason": "UNKNOWN_ACTION",
+        "operation_result": null,
+        "provider_call_id": "chatcmpl-tool-978f313e423ba405"
+      }
+    },
+    {
+      "id": "E22",
+      "sequence": 22,
+      "run_id": "RUN-NEBIUS-8700508f77f2",
+      "type": "tool.completed",
+      "time": "2026-09-28T09:27:59.840706+00:00",
+      "data": {
+        "provider_call_id": "chatcmpl-tool-978f313e423ba405",
+        "error": false
+      }
+    },
+    {
+      "id": "E23",
+      "sequence": 23,
+      "run_id": "RUN-NEBIUS-8700508f77f2",
+      "type": "model.request",
+      "time": "2026-09-28T09:27:59.848809+00:00",
+      "data": {
+        "request_id": "caf6394a51e54227b92b5743dedb92a2",
+        "model": "nvidia/nemotron-3-super-120b-a12b",
+        "input_token_bound": 15202,
+        "max_output_tokens": 4096,
+        "upper_usd": 0.008247,
+        "automatic_retries": 0
+      }
+    },
+    {
+      "id": "E24",
+      "sequence": 24,
+      "run_id": "RUN-NEBIUS-8700508f77f2",
+      "type": "model.usage",
+      "time": "2026-09-28T09:28:01.720026+00:00",
+      "data": {
+        "request_id": "caf6394a51e54227b92b5743dedb92a2",
+        "inputTokens": 1484,
+        "outputTokens": 159,
+        "totalTokens": 1643
+      }
+    },
+    {
+      "id": "E25",
+      "sequence": 25,
+      "run_id": "RUN-NEBIUS-8700508f77f2",
+      "type": "tool.requested",
+      "time": "2026-09-28T09:28:01.721414+00:00",
+      "data": {
+        "toolUseId": "chatcmpl-tool-8af7fde9159b343b",
+        "name": "read_evidence",
+        "input": {
+          "source": "logs"
+        },
+        "model_turn": 5,
+        "origin": "provider"
+      }
+    },
+    {
+      "id": "E26",
+      "sequence": 26,
+      "run_id": "RUN-NEBIUS-8700508f77f2",
+      "type": "evidence.read",
+      "time": "2026-09-28T09:28:02.726770+00:00",
+      "data": {
+        "source": "logs",
+        "available": true,
+        "lines": [
+          "HTTP listener started on owned loopback endpoint.",
+          "Listener stopped; application process is not accepting connections."
+        ],
+        "request": {
+          "http_status": null,
+          "error": "connection unavailable"
+        }
+      }
+    },
+    {
+      "id": "E27",
+      "sequence": 27,
+      "run_id": "RUN-NEBIUS-8700508f77f2",
+      "type": "tool.completed",
+      "time": "2026-09-28T09:28:02.728464+00:00",
+      "data": {
+        "provider_call_id": "chatcmpl-tool-8af7fde9159b343b",
+        "error": false
+      }
+    },
+    {
+      "id": "E28",
+      "sequence": 28,
+      "run_id": "RUN-NEBIUS-8700508f77f2",
+      "type": "model.request",
+      "time": "2026-09-28T09:28:02.735784+00:00",
+      "data": {
+        "request_id": "9b2a0f60b09946cca0f811f9bad3f453",
+        "model": "nvidia/nemotron-3-super-120b-a12b",
+        "input_token_bound": 16256,
+        "max_output_tokens": 4096,
+        "upper_usd": 0.0085632,
+        "automatic_retries": 0
+      }
+    },
+    {
+      "id": "E29",
+      "sequence": 29,
+      "run_id": "RUN-NEBIUS-8700508f77f2",
+      "type": "model.usage",
+      "time": "2026-09-28T09:28:05.024080+00:00",
+      "data": {
+        "request_id": "9b2a0f60b09946cca0f811f9bad3f453",
+        "inputTokens": 1584,
+        "outputTokens": 251,
+        "totalTokens": 1835
+      }
+    },
+    {
+      "id": "E30",
+      "sequence": 30,
+      "run_id": "RUN-NEBIUS-8700508f77f2",
+      "type": "tool.requested",
+      "time": "2026-09-28T09:28:05.025654+00:00",
+      "data": {
+        "toolUseId": "chatcmpl-tool-b442a1132857e858",
+        "name": "finish_report",
+        "input": {
+          "problem": "The HTTP listener is not running (listener_running: false) and logs show it started then stopped, leading to connection unavailable errors.",
+          "work_done": "Read status evidence (E9) showing listener not running and business request error. Read logs evidence (E26) showing listener started then stopped.",
+          "next_step": "Since the connector lacks mutation permissions, a human operator must manually restart the HTTP service or restore its local catalog dependency on the owned test resource."
+        },
+        "model_turn": 6,
+        "origin": "provider"
+      }
+    },
+    {
+      "id": "E31",
+      "sequence": 31,
+      "run_id": "RUN-NEBIUS-8700508f77f2",
+      "type": "verification.result",
+      "time": "2026-09-28T09:28:06.030508+00:00",
+      "data": {
+        "status": "FAILED",
+        "check": "Fresh HTTP GET /business; status, instance and catalog content",
+        "http_status": null,
+        "error": "connection unavailable"
+      }
+    },
+    {
+      "id": "E32",
+      "sequence": 32,
+      "run_id": "RUN-NEBIUS-8700508f77f2",
+      "type": "tool.completed",
+      "time": "2026-09-28T09:28:06.032609+00:00",
+      "data": {
+        "provider_call_id": "chatcmpl-tool-b442a1132857e858",
+        "error": false
+      }
+    }
+  ]
+}

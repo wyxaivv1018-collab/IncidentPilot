@@ -1,0 +1,67 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "case": "http-stopped",
+      "run_id": "RUN-NEBIUS-223c43edfd0e",
+      "passed": true,
+      "expected": "RESOLVED",
+      "actual": "RESOLVED",
+      "provider_provenance": true,
+      "guard": true,
+      "post_action_verification": true
+    },
+    {
+      "case": "http-dependency",
+      "run_id": "RUN-NEBIUS-ccc039fcb4ff",
+      "passed": true,
+      "expected": "RESOLVED",
+      "actual": "RESOLVED",
+      "provider_provenance": true,
+      "guard": true,
+      "post_action_verification": true
+    },
+    {
+      "case": "job-transient",
+      "run_id": "RUN-NEBIUS-4cf749f13e08",
+      "passed": true,
+      "expected": "RESOLVED",
+      "actual": "RESOLVED",
+      "provider_provenance": true,
+      "guard": true,
+      "post_action_verification": true
+    },
+    {
+      "case": "job-locked",
+      "run_id": "RUN-NEBIUS-47a66907c88f",
+      "passed": true,
+      "expected": "RESOLVED",
+      "actual": "RESOLVED",
+      "provider_provenance": true,
+      "guard": true,
+      "post_action_verification": true
+    },
+    {
+      "case": "permission-missing",
+      "run_id": "RUN-NEBIUS-e777f1fd6335",
+      "passed": true,
+      "expected": "HUMAN_HANDOFF",
+      "actual": "HUMAN_HANDOFF",
+      "provider_provenance": true,
+      "guard": true,
+      "post_action_verification": true
+    },
+    {
+      "case": "evidence-missing",
+      "run_id": "RUN-NEBIUS-71a6d30eb675",
+      "passed": true,
+      "expected": "HUMAN_HANDOFF",
+      "actual": "HUMAN_HANDOFF",
+      "provider_provenance": true,
+      "guard": true,
+      "post_action_verification": true
+    }
+  ],
+  "paired_cause_adaptation": true,
+  "all_three_comparison_arms_present": true
+}

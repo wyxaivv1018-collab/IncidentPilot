@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta
+      name="description"
+      content="IncidentPilot M03 fixture-driven incident explanation interface"
+    >
+    <meta name="color-scheme" content="light">
+    <title>IncidentPilot · 订单同步事故回放</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">跳到事故时间线</a>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand-lockup" aria-label="IncidentPilot">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 40 40" role="img">
+              <path d="M8 9.5 20 3l12 6.5v12.8L20 36 8 29.5Z"></path>
+              <path d="m14 21 4 4 8-10"></path>
+            </svg>
+          </span>
+          <span class="brand-copy">
+            <strong>IncidentPilot</strong>
+            <small>Incident story</small>
+          </span>
+        </div>
+
+        <div class="topbar__context">
+          <span class="context-dot" aria-hidden="true"></span>
+          <span>Recorded fixture</span>
+          <i></i>
+          <code>order-sync</code>
+        </div>
+
+        <div class="topbar__status">
+          <span class="recorded-pill"><i></i>RECORDED</span>
+          <span class="guarded-pill">
+            <svg viewBox="0 0 20 20" aria-hidden="true">
+              <path d="M10 2 16 4.5V9c0 4-2.5 6.8-6 8-3.5-1.2-6-4-6-8V4.5Z"></path>
+              <path d="m7.2 9.7 1.7 1.7 3.8-4"></path>
+            </svg>
+            Guarded
+          </span>
+        </div>
+      </header>
+
+      <main class="workspace" id="main-content">
+        <section
+          class="incident-panel"
+          id="incident-panel"
+          aria-label="事故结论"
+        ></section>
+
+        <section class="timeline-panel" aria-labelledby="timeline-title">
+          <header class="timeline-header">
+            <div>
+              <span class="section-kicker">Recorded incident story</span>
+              <h2 id="timeline-title">一次判断如何被新证据改变</h2>
+              <p>从最初症状到权威恢复证明，按因果顺序阅读。</p>
+            </div>
+            <div class="playback-controls" aria-label="回放控制">
+              <button
+                type="button"
+                class="icon-button"
+                id="step-back"
+                aria-label="上一步"
+                title="上一步"
+              >
+                <svg viewBox="0 0 20 20" aria-hidden="true">
+                  <path d="M12.8 5.3 8.1 10l4.7 4.7"></path>
+                </svg>
+              </button>
+              <button
+                type="button"
+                class="icon-button icon-button--main"
+                id="autoplay"
+                aria-label="自动回放"
+                title="自动回放"
+              >
+                <svg class="play-icon" viewBox="0 0 20 20" aria-hidden="true">
+                  <path d="m7 5 7 5-7 5Z"></path>
+                </svg>
+                <svg class="pause-icon" viewBox="0 0 20 20" aria-hidden="true">
+                  <path d="M7 5v10M13 5v10"></path>
+                </svg>
+              </button>
+              <button
+                type="button"
+                class="icon-button"
+                id="step-forward"
+                aria-label="下一步"
+                title="下一步"
+              >
+                <svg viewBox="0 0 20 20" aria-hidden="true">
+                  <path d="m7.2 5.3 4.7 4.7-4.7 4.7"></path>
+                </svg>
+              </button>
+              <button type="button" class="replay-button" id="replay">
+                <svg viewBox="0 0 20 20" aria-hidden="true">
+                  <path d="M5.2 7.3H2.8V4.9"></path>
+                  <path d="M3.1 7.1A7 7 0 1 1 3 12"></path>
+                </svg>
+                重播
+              </button>
+            </div>
+          </header>
+
+          <section class="story-rail" aria-label="事故故事阶段">
+            <div class="story-rail__label">
+              <span>恢复过程</span>
+              <strong id="story-progress">08 / 08</strong>
+            </div>
+            <div class="story-rail__steps" id="story-strip"></div>
+          </section>
+
+          <div id="response-banner"></div>
+          <ol class="timeline-list" id="timeline-list"></ol>
+          <div class="timeline-end" id="timeline-end" aria-live="polite"></div>
+        </section>
+
+        <aside class="detail-panel" id="detail-panel">
+          <header class="detail-panel__intro">
+            <span class="section-kicker">按需查看</span>
+            <h2>为什么可以相信这个结论</h2>
+            <p>证据、审批边界和沉淀结果不会打断主故事。</p>
+          </header>
+          <nav class="detail-tabs" aria-label="证据与制品">
+            <button type="button" data-panel="evidence" aria-selected="true">
+              证据
+            </button>
+            <button type="button" data-panel="safety" aria-selected="false">
+              审批
+            </button>
+            <button type="button" data-panel="report" aria-selected="false">
+              报告
+            </button>
+            <button type="button" data-panel="memory" aria-selected="false">
+              记忆
+            </button>
+          </nav>
+          <div class="detail-content" id="detail-content"></div>
+        </aside>
+      </main>
+
+      <footer class="provenance-footer" id="provenance"></footer>
+    </div>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

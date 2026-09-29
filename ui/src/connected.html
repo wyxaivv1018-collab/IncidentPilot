@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>IncidentPilot · Evidence to recovery</title>
+  <meta name="description" content="Investigate connected services, take bounded actions and verify business recovery.">
+  <link rel="stylesheet" href="/styles.css"><link rel="stylesheet" href="/connected.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to investigation</a>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand-lockup"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M8 9.5 20 3l12 6.5v12.8L20 36 8 29.5Z"></path><path d="m14 21 4 4 8-10"></path></svg></span><span class="brand-copy"><strong>IncidentPilot</strong><small>Evidence to recovery</small></span></div>
+      <span class="guarded-pill">Owned test services · Guarded</span>
+      <button id="language" type="button">中文</button>
+    </header>
+    <main id="main-content" class="connected-workspace">
+      <section class="connected-intro"><span class="section-kicker">NEBIUS × NVIDIA · BEST APPS AND AGENTS</span><h1 data-en="Know what broke. See what fixed it." data-zh="系统出问题，下一步有依据。">Know what broke. See what fixed it.</h1><p data-en="Investigate the evidence. Act within permission. Check that the service actually works." data-zh="根据证据调查，在授权范围内处理，再检查系统是否真的恢复。">Investigate the evidence. Act within permission. Check that the service actually works.</p></section>
+      <div class="connected-columns">
+        <section class="connected-card setup"><h2 data-en="Start an investigation" data-zh="开始调查">Start an investigation</h2>
+          <form id="investigation-form">
+            <label for="system" data-en="1 · Choose a system" data-zh="1 · 选择系统">1 · Choose a system</label>
+            <select id="system"><option value="http-app">HTTP application</option><option value="background-jobs">Background task service</option></select>
+            <label for="case" data-en="Test condition" data-zh="测试环境条件">Test condition</label><select id="case"></select>
+            <label for="description" data-en="2 · What is going wrong?" data-zh="2 · 遇到了什么问题？">2 · What is going wrong?</label><textarea id="description" maxlength="1500" rows="3" required></textarea>
+            <label for="mode" data-en="Execution mode" data-zh="运行方式">Execution mode</label>
+            <select id="mode"><option value="live">Live · Nebius / Nemotron</option><option value="offline-test">Offline test · fixed SOP, no AI</option></select>
+            <p id="mode-note" class="connected-muted"></p>
+            <div class="connected-actions"><button id="start" type="submit" class="primary-button" data-en="Investigate & recover" data-zh="调查并处理">Investigate & recover</button><button id="cancel" type="button" disabled data-en="Stop" data-zh="停止">Stop</button></div>
+          </form>
+          <p id="configuration" class="connected-muted"></p>
+          <details><summary data-en="Permissions & limits" data-zh="权限与边界">Permissions & limits</summary><p data-en="Only these project-owned local services can change. No shell, arbitrary URLs, production data or company systems. Missing access leads to a human handoff." data-zh="只允许操作项目自建的本地测试服务。没有任意命令、网址或企业生产数据访问权限；缺少访问权时转交人工。">Only these project-owned local services can change. No shell, arbitrary URLs, production data or company systems. Missing access leads to a human handoff.</p></details>
+          <details><summary data-en="History" data-zh="历史记录">History</summary><div id="history"></div><a href="/index.html?mode=recorded">Legacy order-sync recording · historical evidence</a></details>
+        </section>
+        <section class="connected-card investigation" aria-live="polite">
+          <div class="connected-section-head"><h2 data-en="Your incident, explained" data-zh="这次故障，说明白">Your incident, explained</h2><span id="run-badge" class="connected-badge">READY</span></div>
+          <p id="status" data-en="Choose a system and describe the symptom to begin." data-zh="选择系统并描述故障，开始调查。">Choose a system and describe the symptom to begin.</p>
+          <ol class="connected-progress" aria-label="Investigation stages"><li data-en="Investigate" data-zh="调查">Investigate</li><li data-en="Act" data-zh="处理">Act</li><li data-en="Verify" data-zh="验证">Verify</li><li data-en="Report" data-zh="报告">Report</li></ol>
+          <div id="answer-cards" class="answer-cards"></div>
+          <div id="timeline" class="connected-timeline"></div>
+          <details id="technical"><summary data-en="Evidence, decisions & boundaries" data-zh="展开证据、判断和边界">Evidence, decisions & boundaries</summary><pre id="evidence"></pre></details>
+          <a id="download" hidden download="incidentpilot-report.json" data-en="Download this run's report" data-zh="下载本次报告">Download this run's report</a>
+        </section>
+      </div>
+      <footer class="connected-footer"><span>NVIDIA Nemotron on Nebius Token Factory</span><span id="budget"></span></footer>
+    </main>
+  </div>
+  <script type="module" src="/api/connected.js"></script>
+</body>
+</html>

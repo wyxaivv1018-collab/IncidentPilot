@@ -1,3 +1,5 @@
+> Historical September 9 checkpoint, preserved for provenance. Superseded by README.md and docs/nebius for the current Nebius revision.
+
 # SPEC
 
 > 产品宪法。改范围先改这里，再改代码。

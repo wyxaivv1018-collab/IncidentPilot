@@ -1,0 +1,150 @@
+{
+  "schema_version": "2.0",
+  "run_id": "RUN-NEBIUS-32377f6cdc9c",
+  "system": "background-jobs",
+  "mode": "fixed-sop",
+  "method": "sop",
+  "status": "RESOLVED",
+  "verified": true,
+  "verification": {
+    "evidence_id": "E7",
+    "status": "PASSED",
+    "task_status": "SUCCEEDED",
+    "check": "Worker status plus independently checked current-job output",
+    "result": {
+      "job_id": "b7fedaf1281446ba8c589e7bf18c7091",
+      "total": 31,
+      "input_sha256": "800d51ad557ce57dcd66cf6b3610bd474ff0a6430ca14797553172b005f0cd7b"
+    }
+  },
+  "summary": {
+    "problem": "Fixed SOP inspection; consult attached status and logs.",
+    "work_done": "Standard recovery attempted where evidence and permission allowed.",
+    "next_step": "No action required.",
+    "attribution": "fixed-sop"
+  },
+  "executed_actions": [
+    "retry_task"
+  ],
+  "error": null,
+  "human_steps": 0,
+  "human_steps_definition": "Required operator handoff; not measured human repair effort.",
+  "elapsed_seconds": 0.009,
+  "model_turns": 0,
+  "tool_calls": 6,
+  "cost": {
+    "estimated_usd": 0,
+    "unconfirmed_upper_usd": 0
+  },
+  "events": [
+    {
+      "id": "E1",
+      "sequence": 1,
+      "run_id": "RUN-NEBIUS-32377f6cdc9c",
+      "type": "run.started",
+      "time": "2026-09-23T07:05:14.481622+00:00",
+      "data": {
+        "mode": "fixed-sop",
+        "method": "sop",
+        "system": "background-jobs",
+        "permission": true
+      }
+    },
+    {
+      "id": "E2",
+      "sequence": 2,
+      "run_id": "RUN-NEBIUS-32377f6cdc9c",
+      "type": "evidence.read",
+      "time": "2026-09-23T07:05:14.483358+00:00",
+      "data": {
+        "source": "status",
+        "available": true,
+        "worker_alive": true,
+        "task_status": "FAILED",
+        "output_exists": false
+      }
+    },
+    {
+      "id": "E3",
+      "sequence": 3,
+      "run_id": "RUN-NEBIUS-32377f6cdc9c",
+      "type": "evidence.read",
+      "time": "2026-09-23T07:05:14.484133+00:00",
+      "data": {
+        "source": "logs",
+        "available": true,
+        "lines": [
+          "Task failed: transient dependency timeout; dependency now reachable."
+        ]
+      }
+    },
+    {
+      "id": "E4",
+      "sequence": 4,
+      "run_id": "RUN-NEBIUS-32377f6cdc9c",
+      "type": "decision.recorded",
+      "time": "2026-09-23T07:05:14.485232+00:00",
+      "data": {
+        "action": "retry_task",
+        "evidence_ids": [
+          "E2",
+          "E3"
+        ],
+        "explanation": "Fixed SOP: try the standard first recovery action.",
+        "provider_call_id": null
+      }
+    },
+    {
+      "id": "E5",
+      "sequence": 5,
+      "run_id": "RUN-NEBIUS-32377f6cdc9c",
+      "type": "action.executed",
+      "time": "2026-09-23T07:05:14.487581+00:00",
+      "data": {
+        "action": "retry_task",
+        "executed": true,
+        "guard_decision": "ALLOW",
+        "guard_reason": "ALLOWED_LOW_RISK_ACTION",
+        "operation_result": {
+          "accepted": true,
+          "operation": "retry_task"
+        },
+        "provider_call_id": null
+      }
+    },
+    {
+      "id": "E6",
+      "sequence": 6,
+      "run_id": "RUN-NEBIUS-32377f6cdc9c",
+      "type": "verification.result",
+      "time": "2026-09-23T07:05:14.488676+00:00",
+      "data": {
+        "status": "PASSED",
+        "task_status": "SUCCEEDED",
+        "check": "Worker status plus independently checked current-job output",
+        "result": {
+          "job_id": "b7fedaf1281446ba8c589e7bf18c7091",
+          "total": 31,
+          "input_sha256": "800d51ad557ce57dcd66cf6b3610bd474ff0a6430ca14797553172b005f0cd7b"
+        }
+      }
+    },
+    {
+      "id": "E7",
+      "sequence": 7,
+      "run_id": "RUN-NEBIUS-32377f6cdc9c",
+      "type": "verification.result",
+      "time": "2026-09-23T07:05:14.489546+00:00",
+      "data": {
+        "status": "PASSED",
+        "task_status": "SUCCEEDED",
+        "check": "Worker status plus independently checked current-job output",
+        "result": {
+          "job_id": "b7fedaf1281446ba8c589e7bf18c7091",
+          "total": 31,
+          "input_sha256": "800d51ad557ce57dcd66cf6b3610bd474ff0a6430ca14797553172b005f0cd7b"
+        }
+      }
+    }
+  ]
+}

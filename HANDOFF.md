@@ -1,3 +1,5 @@
+> Historical September 9 checkpoint, preserved for provenance. Superseded by README.md and docs/nebius for the current Nebius revision.
+
 # HANDOFF
 
 > 给 Codex/Work 的工单。新阶段整页覆盖写。执行 Agent 只读本文件 + SPEC.md。

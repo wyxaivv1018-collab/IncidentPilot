@@ -1,0 +1,62 @@
+# Local environment and credentials
+.env
+.env.*
+!.env.example
+.aws/
+credentials.json
+credentials.*
+secrets.json
+secrets.*
+*.credential
+*.credentials
+*.secret
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Python environments and caches
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Packaging and build output
+build/
+dist/
+*.egg-info/
+
+# Node and UI build output
+node_modules/
+ui/dist/
+ui/coverage/
+
+# Generated runtime data (redacted artifacts/acceptance remains trackable)
+artifacts/runtime/
+artifacts/runs/
+artifacts/reports/
+artifacts/memory/
+runtime/
+logs/
+*.log
+
+# IDE, OS, and temporary files
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+Desktop.ini
+tmp/
+temp/
+*.tmp
+*.temp
+~$*

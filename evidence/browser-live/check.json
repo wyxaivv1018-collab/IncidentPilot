@@ -1,0 +1,46 @@
+{
+  "status": "PASS",
+  "mode": "live-browser",
+  "budget_before": {
+    "requests": 100,
+    "estimated_usd": 0.046398,
+    "unconfirmed_upper_usd": 0,
+    "committed_upper_usd": 0.046398,
+    "input_tokens": 127099,
+    "output_tokens": 9187,
+    "ceiling_usd": 0.8,
+    "remaining_under_ceiling_usd": 0.753602,
+    "billing_confirmed": false,
+    "price_source": "https://github.com/nebius/token-factory-cookbook/blob/main/agents/agent-cost-comparison-1/agent_cost_comparison_1.py"
+  },
+  "budget_after": {
+    "requests": 113,
+    "estimated_usd": 0.0533151,
+    "unconfirmed_upper_usd": 0,
+    "committed_upper_usd": 0.0533151,
+    "input_tokens": 146595,
+    "output_tokens": 10374,
+    "ceiling_usd": 0.8,
+    "remaining_under_ceiling_usd": 0.7466849,
+    "billing_confirmed": false,
+    "price_source": "https://github.com/nebius/token-factory-cookbook/blob/main/agents/agent-cost-comparison-1/agent_cost_comparison_1.py"
+  },
+  "cases": [
+    {
+      "case": "http-stopped",
+      "expected": "RESOLVED",
+      "actual": "RESOLVED",
+      "run_id": "RUN-NEBIUS-b5b63ceed79a"
+    },
+    {
+      "case": "job-locked",
+      "expected": "RESOLVED",
+      "actual": "RESOLVED",
+      "run_id": "RUN-NEBIUS-b21c1d52882f"
+    }
+  ],
+  "recording_label": true,
+  "language_toggle": true,
+  "mobile_overflow": false,
+  "javascript_errors": []
+}

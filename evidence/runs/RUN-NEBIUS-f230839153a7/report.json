@@ -1,0 +1,163 @@
+{
+  "schema_version": "2.0",
+  "run_id": "RUN-NEBIUS-f230839153a7",
+  "system": "http-app",
+  "mode": "fixed-sop",
+  "method": "sop",
+  "status": "RESOLVED",
+  "verified": true,
+  "verification": {
+    "evidence_id": "E7",
+    "status": "PASSED",
+    "check": "Fresh HTTP GET /business; status, instance and catalog content",
+    "http_status": 200,
+    "body": {
+      "instance": "dc2366eefc0b4deb82f7cc221262be6c",
+      "items": [
+        "demo-item"
+      ],
+      "error": null
+    }
+  },
+  "summary": {
+    "problem": "Fixed SOP inspection; consult attached status and logs.",
+    "work_done": "Standard recovery attempted where evidence and permission allowed.",
+    "next_step": "No action required.",
+    "attribution": "fixed-sop"
+  },
+  "executed_actions": [
+    "restart_service"
+  ],
+  "error": null,
+  "human_steps": 0,
+  "human_steps_definition": "Required operator handoff; not measured human repair effort.",
+  "elapsed_seconds": 2.076,
+  "model_turns": 0,
+  "tool_calls": 6,
+  "cost": {
+    "estimated_usd": 0,
+    "unconfirmed_upper_usd": 0
+  },
+  "events": [
+    {
+      "id": "E1",
+      "sequence": 1,
+      "run_id": "RUN-NEBIUS-f230839153a7",
+      "type": "run.started",
+      "time": "2026-09-23T07:05:12.276818+00:00",
+      "data": {
+        "mode": "fixed-sop",
+        "method": "sop",
+        "system": "http-app",
+        "permission": true
+      }
+    },
+    {
+      "id": "E2",
+      "sequence": 2,
+      "run_id": "RUN-NEBIUS-f230839153a7",
+      "type": "evidence.read",
+      "time": "2026-09-23T07:05:13.319975+00:00",
+      "data": {
+        "source": "status",
+        "available": true,
+        "listener_running": false,
+        "business_request": {
+          "http_status": null,
+          "error": "connection unavailable"
+        }
+      }
+    },
+    {
+      "id": "E3",
+      "sequence": 3,
+      "run_id": "RUN-NEBIUS-f230839153a7",
+      "type": "evidence.read",
+      "time": "2026-09-23T07:05:14.336471+00:00",
+      "data": {
+        "source": "logs",
+        "available": true,
+        "lines": [
+          "HTTP listener started on owned loopback endpoint.",
+          "Listener stopped; application process is not accepting connections."
+        ],
+        "request": {
+          "http_status": null,
+          "error": "connection unavailable"
+        }
+      }
+    },
+    {
+      "id": "E4",
+      "sequence": 4,
+      "run_id": "RUN-NEBIUS-f230839153a7",
+      "type": "decision.recorded",
+      "time": "2026-09-23T07:05:14.343225+00:00",
+      "data": {
+        "action": "restart_service",
+        "evidence_ids": [
+          "E2",
+          "E3"
+        ],
+        "explanation": "Fixed SOP: try the standard first recovery action.",
+        "provider_call_id": null
+      }
+    },
+    {
+      "id": "E5",
+      "sequence": 5,
+      "run_id": "RUN-NEBIUS-f230839153a7",
+      "type": "action.executed",
+      "time": "2026-09-23T07:05:14.346122+00:00",
+      "data": {
+        "action": "restart_service",
+        "executed": true,
+        "guard_decision": "ALLOW",
+        "guard_reason": "ALLOWED_LOW_RISK_ACTION",
+        "operation_result": {
+          "accepted": true,
+          "operation": "restart_service"
+        },
+        "provider_call_id": null
+      }
+    },
+    {
+      "id": "E6",
+      "sequence": 6,
+      "run_id": "RUN-NEBIUS-f230839153a7",
+      "type": "verification.result",
+      "time": "2026-09-23T07:05:14.349437+00:00",
+      "data": {
+        "status": "PASSED",
+        "check": "Fresh HTTP GET /business; status, instance and catalog content",
+        "http_status": 200,
+        "body": {
+          "instance": "dc2366eefc0b4deb82f7cc221262be6c",
+          "items": [
+            "demo-item"
+          ],
+          "error": null
+        }
+      }
+    },
+    {
+      "id": "E7",
+      "sequence": 7,
+      "run_id": "RUN-NEBIUS-f230839153a7",
+      "type": "verification.result",
+      "time": "2026-09-23T07:05:14.351734+00:00",
+      "data": {
+        "status": "PASSED",
+        "check": "Fresh HTTP GET /business; status, instance and catalog content",
+        "http_status": 200,
+        "body": {
+          "instance": "dc2366eefc0b4deb82f7cc221262be6c",
+          "items": [
+            "demo-item"
+          ],
+          "error": null
+        }
+      }
+    }
+  ]
+}

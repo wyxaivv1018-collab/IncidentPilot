@@ -1,3 +1,5 @@
+> Historical September 9 checkpoint, preserved for provenance. Superseded by README.md and docs/nebius for the current Nebius revision.
+
 # STATUS
 
 > 周一先看这个。每次收工必改。
