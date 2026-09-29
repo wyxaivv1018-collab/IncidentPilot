@@ -10,3 +10,6 @@
   this note does not include or trigger any Devpost submit.
 - Do not commit API keys; do not rerun paid Nebius acceptance from this change set.
 
+
+## Promo form (box) — 2026-09-29
+- Submitted on box browser; confirmation shown; code emailed to wyxaivv1018@gmail.com (pending redeem)
