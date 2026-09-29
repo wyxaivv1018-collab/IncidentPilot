@@ -1,4 +1,4 @@
-# Hugging Face Spaces (Docker SDK) — IncidentPilot Nebius judge demo
+# Docker image for public judge demo (Render free / HF Spaces if PRO)
 # Secret: set NEBIUS_API_KEY in Space Settings → Secrets (never COPY a key file).
 FROM python:3.11-slim-bookworm
 

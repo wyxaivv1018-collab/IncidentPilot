@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: incidentpilot-judge
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /
+    envVars:
+      - key: INCIDENTPILOT_PUBLIC_HOST
+        value: "1"
+      - key: NEBIUS_API_KEY
+        sync: false
