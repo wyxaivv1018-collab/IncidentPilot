@@ -15,12 +15,29 @@ def main():
     parser.add_argument("--method", choices=["incidentpilot", "generic", "sop"], default="incidentpilot")
     parser.add_argument("--live", action="store_true", help="Explicitly allow budgeted Nebius calls")
     parser.add_argument("--port", type=int, default=4180)
+    parser.add_argument(
+        "--public-host",
+        action="store_true",
+        help="Bind 0.0.0.0 and trust INCIDENTPILOT_PUBLIC_HOSTNAME / --public-hostname (HF Spaces)",
+    )
+    parser.add_argument(
+        "--public-hostname",
+        default=None,
+        help="Allowed Host/Origin hostname when --public-host or INCIDENTPILOT_PUBLIC_HOST=1",
+    )
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[1]
     runtime = root / "runtime" / "nebius"
     if args.command == "serve":
         from incidentpilot.connected.server import serve
-        serve(root, port=args.port, allow_live=args.live)
+        # None keeps env-based public mode available when the flag is omitted.
+        serve(
+            root,
+            port=args.port,
+            allow_live=args.live,
+            public_host=True if args.public_host else None,
+            public_hostname=args.public_hostname,
+        )
     elif args.command == "compare":
         print(compare(runtime, live=args.live))
     else:

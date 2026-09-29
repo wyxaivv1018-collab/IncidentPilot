@@ -54,3 +54,49 @@ def test_live_is_explicit_and_history_is_marked_recorded(server):
     status, body = request(base, "/api/v2/history/RUN-NEBIUS-abc")
     assert status == 200 and json.loads(body)["mode"] == "recorded"
     assert request(base, "/api/v2/history/invalid")[0] == 400
+
+
+@pytest.fixture
+def public_server(tmp_path):
+    (tmp_path / "ui/src").mkdir(parents=True)
+    (tmp_path / "ui/src/connected.html").write_text("owned test UI", encoding="utf8")
+    hostname = "judge-demo.example.hf.space"
+    server = create_server(
+        tmp_path, port=0, public_host=True, public_hostname=hostname
+    )
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    yield f"http://127.0.0.1:{server.server_port}", hostname
+    server.shutdown()
+    server.server_close()
+    thread.join(timeout=2)
+
+
+def test_public_host_accepts_allowed_host_rejects_attacker(public_server):
+    base, hostname = public_server
+    status, body = request(
+        base,
+        "/api/v2/config",
+        headers={"Host": hostname},
+    )
+    assert status == 200 and not json.loads(body)["allow_live"]
+    status, body = request(
+        base,
+        "/api/v2/config",
+        headers={"Host": f"{hostname}:443", "Origin": f"https://{hostname}"},
+    )
+    assert status == 200
+    status, _ = request(
+        base,
+        "/api/v2/config",
+        headers={"Host": hostname, "Origin": f"http://{hostname}"},
+    )
+    assert status == 200
+    assert request(base, "/api/v2/config", headers={"Host": "attacker.invalid"})[0] == 403
+    assert request(
+        base,
+        "/api/v2/config",
+        headers={"Host": hostname, "Origin": "https://attacker.invalid"},
+    )[0] == 403
+    # Default loopback Host must not bypass public allowlist.
+    assert request(base, "/api/v2/config")[0] == 403

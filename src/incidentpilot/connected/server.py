@@ -1,4 +1,4 @@
-"""Loopback-only v2 UI/API; serial runs share a persistent budget ledger."""
+"""Loopback-only v2 UI/API by default; optional public host for judge demos."""
 
 from __future__ import annotations
 
@@ -15,12 +15,72 @@ from incidentpilot.connected.connectors import CASES
 from incidentpilot.connected.runner import execute_case
 
 
-def create_server(root: Path, *, port: int = 4180, allow_live: bool = False):
+def resolve_public_host(
+    *,
+    public_host: bool | None = None,
+    public_hostname: str | None = None,
+) -> tuple[bool, str | None]:
+    """Resolve public hosting from explicit args and INCIDENTPILOT_* env vars.
+
+    Default remains loopback-only. Public mode requires both an enable flag and a hostname.
+    """
+    if public_host is None:
+        raw = os.environ.get("INCIDENTPILOT_PUBLIC_HOST", "").strip().lower()
+        public_host = raw in {"1", "true", "yes", "on"}
+    hostname = (public_hostname if public_hostname is not None else "").strip()
+    if not hostname:
+        hostname = (
+            os.environ.get("INCIDENTPILOT_PUBLIC_HOSTNAME", "").strip()
+            or os.environ.get("SPACE_HOST", "").strip()
+        )
+    if public_host and not hostname:
+        raise ValueError(
+            "Public host mode requires INCIDENTPILOT_PUBLIC_HOSTNAME "
+            "(or SPACE_HOST / --public-hostname)"
+        )
+    return bool(public_host), (hostname or None)
+
+
+def _host_matches(host_header: str | None, hostname: str) -> bool:
+    if not host_header:
+        return False
+    host = host_header.strip().lower()
+    expected = hostname.strip().lower()
+    if host == expected:
+        return True
+    # Accept hostname:port (HF Spaces / reverse proxies may include a port).
+    return host.startswith(expected + ":")
+
+
+def _origin_matches(origin: str | None, hostname: str) -> bool:
+    if not origin:
+        return True
+    origin = origin.strip().lower()
+    expected = hostname.strip().lower()
+    for scheme in ("https", "http"):
+        base = f"{scheme}://{expected}"
+        if origin == base or origin.startswith(base + ":"):
+            return True
+    return False
+
+
+def create_server(
+    root: Path,
+    *,
+    port: int = 4180,
+    allow_live: bool = False,
+    public_host: bool | None = None,
+    public_hostname: str | None = None,
+):
+    enabled, hostname = resolve_public_host(
+        public_host=public_host, public_hostname=public_hostname
+    )
     runtime = root / "runtime" / "nebius"
     ledger = BudgetLedger(runtime / "budget.sqlite")
     state = {"busy": False, "session": None, "report": None, "error": None}
     lock = threading.RLock()
     static = root / "ui" / "src"
+    bind_host = "0.0.0.0" if enabled else "127.0.0.1"
 
     class Handler(BaseHTTPRequestHandler):
         def log_message(self, *_args):
@@ -38,8 +98,10 @@ def create_server(root: Path, *, port: int = 4180, allow_live: bool = False):
 
         def trusted(self):
             host = self.headers.get("Host")
-            expected = f"127.0.0.1:{self.server.server_port}"
             origin = self.headers.get("Origin")
+            if enabled and hostname:
+                return _host_matches(host, hostname) and _origin_matches(origin, hostname)
+            expected = f"127.0.0.1:{self.server.server_port}"
             return host == expected and (not origin or origin == "http://" + expected)
 
         def do_GET(self):
@@ -149,14 +211,33 @@ def create_server(root: Path, *, port: int = 4180, allow_live: bool = False):
             threading.Thread(target=run, daemon=True).start()
             self.send_json(202, {"accepted": True})
 
-    server = ThreadingHTTPServer(("127.0.0.1", port), Handler)
+    server = ThreadingHTTPServer((bind_host, port), Handler)
     server.daemon_threads = True
+    server.public_host_enabled = enabled
+    server.public_hostname = hostname
     return server
 
 
-def serve(root: Path, *, port: int, allow_live: bool):
-    server = create_server(root, port=port, allow_live=allow_live)
-    print(f"IncidentPilot: http://127.0.0.1:{server.server_port}/", flush=True)
+def serve(
+    root: Path,
+    *,
+    port: int,
+    allow_live: bool,
+    public_host: bool | None = None,
+    public_hostname: str | None = None,
+):
+    server = create_server(
+        root,
+        port=port,
+        allow_live=allow_live,
+        public_host=public_host,
+        public_hostname=public_hostname,
+    )
+    if getattr(server, "public_host_enabled", False):
+        host = server.public_hostname
+        print(f"IncidentPilot (public): http://0.0.0.0:{server.server_port}/ host={host}", flush=True)
+    else:
+        print(f"IncidentPilot: http://127.0.0.1:{server.server_port}/", flush=True)
     print(f"Live calls enabled: {allow_live}; model: {MODEL_ID}; development ceiling: $0.80", flush=True)
     try:
         server.serve_forever(poll_interval=0.2)
