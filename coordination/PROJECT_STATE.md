@@ -13,3 +13,9 @@
 
 ## Promo form (box) — 2026-09-29
 - Submitted on box browser; confirmation shown; code emailed to wyxaivv1018@gmail.com (pending redeem)
+
+## Judge hosting (2026-09-29)
+- Platform: Render free web service (HF Docker Spaces requires PRO; blocked).
+- URL: https://incidentpilot-judge.onrender.com/
+- Secret: NEBIUS_API_KEY set in Render env (not in git).
+- Promo credits through 2026-12-15: still waiting for emailed promo code redemption.
