@@ -14,8 +14,8 @@ so Spaces can reverse-proxy HTTPS to the app.
 ## Create the Space
 
 1. Create a **Docker** Space (SDK: Docker), public or gated for judges.
-2. Point it at this repository (or copy `deploy/hf-space/Dockerfile` to the Space root
-   and keep the IncidentPilot source tree available at build context root).
+2. Point it at this repository. A root `Dockerfile` (same as `deploy/hf-space/Dockerfile`)
+   is required so Hugging Face Docker Spaces can build from the repo root.
 3. In Space **Settings → Secrets**, add:
    - `NEBIUS_API_KEY` — Token Factory key for live Investigate only
 4. Optional Space variables:
