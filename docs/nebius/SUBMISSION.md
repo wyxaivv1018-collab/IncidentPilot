@@ -50,7 +50,7 @@ measured labor savings. A local working build is distinct from a public judge-re
 
 ## Links to fill only after actual publication
 
-- Public source repository: **NOT PUBLISHED**
+- Public source repository: https://github.com/wyxaivv1018-collab/IncidentPilot
 - Free working demo/test-build URL valid through judging: **NOT PUBLISHED**
 - Public YouTube demo under three minutes: **NOT PUBLISHED**
 - Devpost submission confirmation: **NOT SUBMITTED**
