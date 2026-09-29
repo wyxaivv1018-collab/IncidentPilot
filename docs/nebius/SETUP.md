@@ -40,19 +40,21 @@ silently raised by relaunching. Keep this ledger across restarts. The remaining 
 user's $1 authorization is reserved, not automatically enabled. Concurrent unrelated account
 spend cannot be observed by this local ledger; account balance must be checked before live work.
 
-Offline checks:
+Offline checks for the public release (no model charges):
 
 ```sh
-uv run --frozen pytest -q
-uv run --frozen ruff check .
-uv run --frozen pytest -q tests/test_smoke.py -k tracked_files_have_no_obvious_credentials
-npm --prefix ui test
-npm --prefix ui run build
+uv run --frozen pytest -q tests/unit/test_connected.py tests/api/test_connected_server.py
+uv run --frozen ruff check src/incidentpilot/connected tests/unit/test_connected.py tests/api/test_connected_server.py
 uv run --frozen --with 'strands-agents[openai]==1.36.0' python scripts/nebius_sdk_check.py
 uv run --frozen python scripts/run_nebius.py compare
 # With the local server running:
 node scripts/nebius_browser_check.mjs
 ```
+
+The complete development workspace additionally runs the full Python suite, tracked-file
+credential check and legacy npm UI tests/build. Internal coordination and these historical
+workspace-dependent tests are excluded from the public candidate. No development check was
+removed or weakened; the release includes its focused connector/API tests and browser tools.
 
 Paid commands, only within the existing authorized balance:
 
