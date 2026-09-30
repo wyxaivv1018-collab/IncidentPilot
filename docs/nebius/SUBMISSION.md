@@ -48,11 +48,14 @@ claim. See `PROVENANCE.md`. The current connectors cover owned test services, no
 production systems. Small evaluation results are not evidence of production reliability or
 measured labor savings. A local working build is distinct from a public judge-ready release.
 
-## Links to fill only after actual publication
+## Published links and submission status
 
 - Public source repository: https://github.com/wyxaivv1018-collab/IncidentPilot
-- Free working demo/test-build URL valid through judging: **NOT PUBLISHED**
-- Public YouTube demo under three minutes: **NOT PUBLISHED**
-- Devpost submission confirmation: **NOT SUBMITTED**
+- Free working demo/test-build URL valid through judging: https://incidentpilot-judge.onrender.com/
+- Public YouTube demo under three minutes: https://youtu.be/SFowqxkH0Gg
+- Devpost status: **SUBMITTED** to **Nebius x NVIDIA Global AI Hackathon** (user-confirmed 2026-09-30 ~14:21 Asia/Shanghai)
+- Devpost submission id: **1174683**
+- Owner: **v pyw / @wyxaivv1018-collab**
+- Evidence: the project page shows **SUBMITTED TO Nebius x NVIDIA Global AI Hackathon** with **Edit hackathon submission**; the YouTube embed is present.
 
-Never replace these with an implied completion claim before obtaining the actual URLs/receipt.
+No confirmation email id is recorded.
