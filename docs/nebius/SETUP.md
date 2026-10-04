@@ -75,6 +75,7 @@ Historical C11 and earlier v1 artifacts remain in their original locations. The 
 available at `/index.html?mode=recorded`; new report history is explicitly marked RECORDED.
 
 The project has been submitted; current published links are in SUBMISSION.md.
-Public live hosting requires INCIDENTPILOT_DATA_DIR to name a persistent mounted directory
-with an explicitly initialized budget ledger. See ../../deploy/render/PERSISTENT-STORAGE.md.
-Local setup remains optional and does not replace the published judge-access service.
+The judge demo remains on Render's free instance. Its ephemeral filesystem can discard
+reports and the local usage ledger across host restarts/redeployments. The ledger cannot
+establish total account spending or remaining provider credit. Download reports that need
+to be retained. No paid storage is required or enabled by this repair.

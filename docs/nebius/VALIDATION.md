@@ -135,16 +135,14 @@ This revision repairs existing behavior only:
 - Preserve interrupted offline/SOP reports and accept cancellation during session startup.
 - Ignore an old run's delayed cancellation response after another run has started.
 - Resolve Windows-only dependencies conditionally for Linux deployment.
-- Require an existing mounted budget ledger for public live mode; reuse it across runs and
-  deployments, and refuse missing/corrupt storage without recreating an allowance.
+- Reuse the server's budget ledger for every run and reject lost/corrupt storage within the
+  running process instead of silently recreating an allowance.
 
-Current checkout validation: 51 Python tests passed; 9 Node UI regression tests passed;
-`ruff check .` and `git diff --check` passed. The exact Docker requirements entry resolves
-for Linux x86_64 / Python 3.11. No real model call was made for these regression checks.
-Persistence integration uses a controlled mount check and fake model: it verifies budget and
-history across new server instances, reuse of the startup ledger, and refusal after its loss.
+The owner declined new hosting charges. The free Render configuration is retained. Durable
+history and cumulative accounting across host replacements remain unresolved: free hosting
+can discard both. No paid infrastructure or new incident capability is introduced.
 
-Deployment boundary: persistent Render storage still requires an approved disk-capable
-instance, one-time migration, and an actual restart check. Passing these local tests does not
-establish live deployment or an updated Devpost submission. Follow
-[the migration procedure](../../deploy/render/PERSISTENT-STORAGE.md) before production startup.
+Final free-hosting-compatible regression checks: 35 Python tests and 9 Node UI tests passed.
+`ruff check .`, `git diff --check`, and the inherited tracked-file credential scan passed.
+The Docker requirements entry also resolves on Linux x86_64 / Python 3.11. No paid model
+call was made for this repair. Deployment and submission are verified separately below.

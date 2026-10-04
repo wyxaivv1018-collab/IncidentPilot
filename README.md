@@ -53,7 +53,8 @@ The complete internal test suite remains in the development workspace.
 The project was submitted to the Nebius x NVIDIA Global AI Hackathon on September 30, 2026
 (submission 1174683). See [submission links and status](docs/nebius/SUBMISSION.md).
 
-Public live deployments must use a persistent mounted data directory and an explicitly
-initialized budget ledger. A missing or invalid ledger stops startup instead of resetting
-the spending allowance. See [persistent storage setup](deploy/render/PERSISTENT-STORAGE.md).
-Local development keeps its existing runtime directory by default.
+The judge demo continues on Render's free instance. Its local history and usage ledger can
+be reset by a host restart or redeployment; this ledger is not an account-wide spending cap.
+Download reports you need to retain. Missing or corrupt ledgers encountered by a running
+server are rejected instead of being recreated within that server process. No paid storage
+or new infrastructure is enabled by this revision.

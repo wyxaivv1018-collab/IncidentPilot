@@ -12,8 +12,7 @@ from incidentpilot.connected.server import create_server
 
 
 @pytest.fixture
-def server(tmp_path, monkeypatch):
-    monkeypatch.delenv("INCIDENTPILOT_DATA_DIR", raising=False)
+def server(tmp_path):
     (tmp_path / "ui/src").mkdir(parents=True)
     (tmp_path / "ui/src/connected.html").write_text("owned test UI", encoding="utf8")
     server = create_server(tmp_path, port=0)
@@ -59,8 +58,7 @@ def test_live_is_explicit_and_history_is_marked_recorded(server):
 
 
 @pytest.fixture
-def public_server(tmp_path, monkeypatch):
-    monkeypatch.delenv("INCIDENTPILOT_DATA_DIR", raising=False)
+def public_server(tmp_path):
     (tmp_path / "ui/src").mkdir(parents=True)
     (tmp_path / "ui/src/connected.html").write_text("owned test UI", encoding="utf8")
     hostname = "judge-demo.example.hf.space"
@@ -143,28 +141,20 @@ def test_pending_run_mode_and_cancel_survive_session_initialization(server, monk
     assert (root / "runtime/nebius/runs" / rows[-1]["run_id"] / "report.json").is_file()
 
 
-
-def test_public_live_deployments_preserve_and_inject_the_ledger(tmp_path, monkeypatch):
+def test_public_live_restarts_reuse_existing_files_and_inject_the_ledger(tmp_path, monkeypatch):
     import incidentpilot.connected.runner as runner_module
     import incidentpilot.connected.server as server_module
-    from incidentpilot.connected import storage
     from incidentpilot.connected.budget import BudgetBlocked, BudgetLedger
 
-    directory = tmp_path / "persistent-data"
-    path = directory / "budget.sqlite"
-    BudgetLedger(path, limit_usd=0.05).reserve("prior-run", 0.01)
-    report_path = directory / "runs" / "RUN-NEBIUS-prior" / "report.json"
-    report_path.parent.mkdir(parents=True)
-    report_path.write_text(json.dumps({"run_id": "RUN-NEBIUS-prior", "system": "http-app",
-                                     "mode": "live", "status": "HUMAN_HANDOFF"}), encoding="utf8")
-    monkeypatch.setenv("INCIDENTPILOT_DATA_DIR", str(directory))
+    root = tmp_path / "same-service-directory"
+    path = root / "runtime" / "nebius" / "budget.sqlite"
+    assert not path.exists()
     monkeypatch.setenv("NEBIUS_API_KEY", "unused-test-key")
-    monkeypatch.setattr(storage.os.path, "ismount", lambda value: value == directory)
-    server_ledgers, run_ledgers, failures = [], [], []
+    server_ledgers, run_ledgers, failures, report_ids = [], [], [], []
     finished = threading.Event()
 
-    def existing_ledger(*args, **kwargs):
-        assert kwargs["allow_create"] is False
+    def startup_ledger(*args, **kwargs):
+        assert args[0] == path
         ledger = BudgetLedger(*args, **kwargs)
         server_ledgers.append(ledger)
         return ledger
@@ -186,14 +176,14 @@ def test_public_live_deployments_preserve_and_inject_the_ledger(tmp_path, monkey
         finally:
             finished.set()
 
-    monkeypatch.setattr(server_module, "BudgetLedger", existing_ledger)
+    monkeypatch.setattr(server_module, "BudgetLedger", startup_ledger)
     monkeypatch.setattr(server_module, "execute_case", observed_case)
     monkeypatch.setattr(runner_module, "run_agent", fake_agent)
-    hostname = "persistent-demo.example"
+    hostname = "free-demo.example"
     headers = {"Host": hostname, "Content-Type": "application/json"}
     request_body = {"case": "job-transient", "mode": "live", "description": "Task failed"}
-    for deployment in range(2):
-        root = tmp_path / f"deployment-{deployment}"
+    # Files remain in this directory; this does not simulate platform filesystem loss.
+    for restart in range(2):
         instance = create_server(root, port=0, allow_live=True, public_host=True,
                                  public_hostname=hostname)
         thread = threading.Thread(target=instance.serve_forever, daemon=True)
@@ -201,14 +191,13 @@ def test_public_live_deployments_preserve_and_inject_the_ledger(tmp_path, monkey
         base = f"http://127.0.0.1:{instance.server_port}"
         try:
             status, content = request(base, "/api/v2/config", headers=headers)
-            assert status == 200
+            assert status == 200 and path.is_file()
             budget = json.loads(content)["budget"]
-            assert budget["requests"] == deployment + 1
-            assert budget["ceiling_usd"] == 0.05
-            assert budget["unconfirmed_upper_usd"] == round(0.01 * (deployment + 1), 8)
+            assert budget["requests"] == restart
+            assert budget["ceiling_usd"] == 0.8
+            assert budget["unconfirmed_upper_usd"] == round(0.01 * restart, 8)
             rows = json.loads(request(base, "/api/v2/history", headers=headers)[1])
-            assert len(rows) == deployment + 1
-            assert any(row["run_id"] == "RUN-NEBIUS-prior" for row in rows)
+            assert {row["run_id"] for row in rows} == set(report_ids)
             finished.clear()
             assert request(base, "/api/v2/run", request_body, headers)[0] == 202
             assert finished.wait(3)
@@ -221,9 +210,9 @@ def test_public_live_deployments_preserve_and_inject_the_ledger(tmp_path, monkey
                     break
                 time.sleep(0.01)
             assert not state["busy"] and state["report"]
-            assert state["budget"]["requests"] == deployment + 2
-            assert not (root / "runtime").exists()
-            if deployment == 1:
+            report_ids.append(state["report"]["run_id"])
+            assert state["budget"]["requests"] == restart + 1
+            if restart == 1:
                 path.unlink()
                 finished.clear()
                 assert request(base, "/api/v2/run", request_body, headers)[0] == 202
@@ -236,7 +225,4 @@ def test_public_live_deployments_preserve_and_inject_the_ledger(tmp_path, monkey
             instance.shutdown()
             instance.server_close()
             thread.join(timeout=2)
-    with pytest.raises(BudgetBlocked, match="BUDGET_STORAGE_MISSING"):
-        create_server(tmp_path / "third-deployment", port=0, allow_live=True,
-                      public_host=True, public_hostname=hostname)
     assert not path.exists()

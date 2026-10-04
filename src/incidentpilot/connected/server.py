@@ -13,7 +13,6 @@ from urllib.parse import urlparse
 from incidentpilot.connected.budget import BudgetLedger, MODEL_ID
 from incidentpilot.connected.connectors import CASES
 from incidentpilot.connected.runner import execute_case
-from incidentpilot.connected.storage import resolve_runtime
 
 
 def resolve_public_host(
@@ -76,9 +75,8 @@ def create_server(
     enabled, hostname = resolve_public_host(
         public_host=public_host, public_hostname=public_hostname
     )
-    public_live = enabled and allow_live
-    runtime = resolve_runtime(root, public_live=public_live)
-    ledger = BudgetLedger(runtime / "budget.sqlite", allow_create=not public_live)
+    runtime = root / "runtime" / "nebius"
+    ledger = BudgetLedger(runtime / "budget.sqlite")
     state = {"busy": False, "session": None, "report": None, "error": None,
              "mode": None, "cancel_requested": False}
     lock = threading.RLock()
