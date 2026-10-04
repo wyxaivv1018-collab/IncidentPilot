@@ -59,3 +59,18 @@ measured labor savings. A local working build is distinct from a public judge-re
 - Evidence: the project page shows **SUBMITTED TO Nebius x NVIDIA Global AI Hackathon** with **Edit hackathon submission**; the YouTube embed is present.
 
 No confirmation email id is recorded.
+
+
+## October 5, 2026 reliability revision
+
+The existing submission **1174683** was updated and saved, with no new project created.
+Code revision **e16249b** is published on the same repository's `main` branch and deployed
+on the same free demo URL. The public project page is:
+https://devpost.com/software/incidentpilot-oty2b3
+
+Devpost finalization was read back as **SUBMITTED**, **5/5 steps done**, **Project submitted!**.
+The project story and judge-facing update identify the revision and validation results.
+The public page separately confirms the update is visible. Tests and deployment evidence are
+recorded in VALIDATION.md. No paid infrastructure or paid model calls were added by this repair.
+Free-host history and local accounting can still reset on host replacement; this limitation
+is disclosed rather than claimed as fixed.

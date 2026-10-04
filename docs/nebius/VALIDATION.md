@@ -146,3 +146,19 @@ Final free-hosting-compatible regression checks: 35 Python tests and 9 Node UI t
 `ruff check .`, `git diff --check`, and the inherited tracked-file credential scan passed.
 The Docker requirements entry also resolves on Linux x86_64 / Python 3.11. No paid model
 call was made for this repair. Deployment and submission are verified separately below.
+
+
+Release verification completed on 2026-10-05 (Asia/Shanghai):
+
+- Code revision: `e16249be772eab92a2940e86add5e0478dadfd31` on public `main`.
+- Render deployment `dep-db19s1favr4c73aui2hg` is live on the unchanged Free service.
+  Deployed frontend bytes match the repaired source; the API returns the server execution mode.
+- Real Chrome local smoke: all 6 existing offline scenarios passed; no JavaScript exceptions,
+  correct recorded-history label and language switching, no horizontal overflow at 430px.
+- Deployed offline smoke: `RUN-NEBIUS-3d49d8761427` (HTTP) and
+  `RUN-NEBIUS-497c1848ef1b` (background task) both RESOLVED; recorded reports readable.
+  The checks added zero model requests. This does not constitute a new live-model test.
+- Devpost submission `1174683` project details and judge-facing revision notes were saved.
+  Finalization shows SUBMITTED, 5/5 steps done, and Project submitted! The public page
+  independently shows the October 5 revision and the free-host storage limitation.
+- No paid hosting, persistent disk or new model allowance was purchased or enabled.
