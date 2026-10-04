@@ -125,3 +125,26 @@ requests before this pair, versus the previous recorded 96; all costs remain inc
 User authorized public repository wyxaivv1018-collab/IncidentPilot and YouTube channel
 @yxw-y1v. Final Devpost submission belongs to Grokbot. No hosting account was provided.
 Repository/video publication and free judge access require separately verified completion.
+
+## 2026-10-05 defect repair validation
+
+This revision repairs existing behavior only:
+
+- Resume status polling after an uncertain POST response; lock inputs during active runs.
+- Display the server's execution mode on refresh and reconnect.
+- Preserve interrupted offline/SOP reports and accept cancellation during session startup.
+- Ignore an old run's delayed cancellation response after another run has started.
+- Resolve Windows-only dependencies conditionally for Linux deployment.
+- Require an existing mounted budget ledger for public live mode; reuse it across runs and
+  deployments, and refuse missing/corrupt storage without recreating an allowance.
+
+Current checkout validation: 51 Python tests passed; 9 Node UI regression tests passed;
+`ruff check .` and `git diff --check` passed. The exact Docker requirements entry resolves
+for Linux x86_64 / Python 3.11. No real model call was made for these regression checks.
+Persistence integration uses a controlled mount check and fake model: it verifies budget and
+history across new server instances, reuse of the startup ledger, and refusal after its loss.
+
+Deployment boundary: persistent Render storage still requires an approved disk-capable
+instance, one-time migration, and an actual restart check. Passing these local tests does not
+establish live deployment or an updated Devpost submission. Follow
+[the migration procedure](../../deploy/render/PERSISTENT-STORAGE.md) before production startup.

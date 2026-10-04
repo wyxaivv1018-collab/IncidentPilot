@@ -7,6 +7,7 @@ import pytest
 
 from incidentpilot.connected.budget import BudgetBlocked, BudgetLedger, estimate_request
 from incidentpilot.connected.connectors import BackgroundTasks, HttpApplication
+from incidentpilot.connected.runner import execute_case
 from incidentpilot.connected.session import ConnectedSession, read_report
 
 
@@ -158,3 +159,75 @@ def test_per_run_budget_reports_shared_remaining(tmp_path):
     assert ledger.summary("first")["committed_upper_usd"] == 0.02
     assert ledger.summary("first")["remaining_under_ceiling_usd"] == 0.75
     assert ledger.summary("second")["remaining_under_ceiling_usd"] == 0.75
+
+
+@pytest.mark.parametrize("mode,method", [("offline-test", "incidentpilot"), ("live", "sop")])
+def test_cancelled_sop_case_preserves_evidence_and_report(tmp_path, monkeypatch, mode, method):
+    sessions = []
+
+    def cancel_after_evidence(run):
+        sessions.append(run)
+        read = run.connector.read
+
+        def read_then_cancel(source):
+            result = read(source)
+            if source == "logs":
+                run.cancelled = True
+            return result
+
+        monkeypatch.setattr(run.connector, "read", read_then_cancel)
+
+    report = execute_case("job-transient", tmp_path, mode=mode, method=method,
+                          on_session=cancel_after_evidence)
+    run = sessions[0]
+    saved = json.loads((run.directory / "report.json").read_text(encoding="utf8"))
+    events = [json.loads(line) for line in
+              (run.directory / "events.jsonl").read_text(encoding="utf8").splitlines()]
+    assert saved == report
+    assert report["run_id"] == run.run_id
+    assert report["status"] == "HUMAN_HANDOFF" and not report["verified"]
+    assert report["error"] == "CANCELLED"
+    assert report["executed_actions"] == []
+    assert report["events"] == events
+    assert [event["data"]["source"] for event in events
+            if event["type"] == "evidence.read"] == ["status", "logs"]
+    assert events[-1]["type"] == "run.error"
+    assert events[-1]["data"] == {"category": "CANCELLED"}
+    assert not run.connector._thread.is_alive()
+
+
+@pytest.mark.parametrize("mode,method", [("offline-test", "incidentpilot"), ("live", "sop")])
+def test_failed_sop_case_records_safe_error_and_cannot_reuse_pass(tmp_path, monkeypatch,
+                                                                mode, method):
+    sessions = []
+    private_error = "sensitive-test-error-not-for-the-report"
+
+    def fail_final_verification(run):
+        sessions.append(run)
+        verify = run.connector.verify
+        checks = 0
+
+        def verify_then_fail():
+            nonlocal checks
+            checks += 1
+            if checks == 2:
+                raise ValueError(private_error)
+            return verify()
+
+        monkeypatch.setattr(run.connector, "verify", verify_then_fail)
+
+    report = execute_case("job-transient", tmp_path, mode=mode, method=method,
+                          on_session=fail_final_verification)
+    run = sessions[0]
+    saved_text = (run.directory / "report.json").read_text(encoding="utf8")
+    events_text = (run.directory / "events.jsonl").read_text(encoding="utf8")
+    assert json.loads(saved_text) == report
+    assert report["run_id"] == run.run_id
+    assert report["verification"]["status"] == "PASSED"
+    assert report["status"] == "HUMAN_HANDOFF" and not report["verified"]
+    assert report["executed_actions"] == ["retry_task"]
+    assert report["error"] == "ValueError"
+    assert report["events"][-1]["type"] == "run.error"
+    assert report["events"][-1]["data"] == {"category": "ValueError"}
+    assert private_error not in saved_text + events_text
+    assert not run.connector._thread.is_alive()

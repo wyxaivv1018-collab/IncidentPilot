@@ -13,6 +13,7 @@ from urllib.parse import urlparse
 from incidentpilot.connected.budget import BudgetLedger, MODEL_ID
 from incidentpilot.connected.connectors import CASES
 from incidentpilot.connected.runner import execute_case
+from incidentpilot.connected.storage import resolve_runtime
 
 
 def resolve_public_host(
@@ -75,9 +76,11 @@ def create_server(
     enabled, hostname = resolve_public_host(
         public_host=public_host, public_hostname=public_hostname
     )
-    runtime = root / "runtime" / "nebius"
-    ledger = BudgetLedger(runtime / "budget.sqlite")
-    state = {"busy": False, "session": None, "report": None, "error": None}
+    public_live = enabled and allow_live
+    runtime = resolve_runtime(root, public_live=public_live)
+    ledger = BudgetLedger(runtime / "budget.sqlite", allow_create=not public_live)
+    state = {"busy": False, "session": None, "report": None, "error": None,
+             "mode": None, "cancel_requested": False}
     lock = threading.RLock()
     static = root / "ui" / "src"
     bind_host = "0.0.0.0" if enabled else "127.0.0.1"
@@ -118,7 +121,8 @@ def create_server(
                 with lock:
                     session = state["session"]
                     self.send_json(200, {"busy": state["busy"], "report": state["report"],
-                        "error": state["error"], "run_id": session.run_id if session else None,
+                        "error": state["error"], "mode": state["mode"],
+                        "run_id": session.run_id if session else None,
                         "events": list(session.events) if session else [], "budget": ledger.summary()})
                 return
             if path == "/api/v2/report":
@@ -174,8 +178,10 @@ def create_server(
                 return
             if self.path == "/api/v2/cancel":
                 with lock:
-                    if state["session"] and state["busy"]:
-                        state["session"].cancelled = True
+                    if state["busy"]:
+                        state["cancel_requested"] = True
+                        if state["session"]:
+                            state["session"].cancelled = True
                 self.send_json(200, {"cancel_requested": True})
                 return
             if self.path != "/api/v2/run":
@@ -194,12 +200,18 @@ def create_server(
                 if state["busy"]:
                     self.send_json(409, {"error": "A run is already in progress"})
                     return
-                state.update(busy=True, session=None, report=None, error=None)
+                state.update(busy=True, session=None, report=None, error=None,
+                             mode=mode, cancel_requested=False)
+
+            def attach_session(session):
+                with lock:
+                    session.cancelled = state["cancel_requested"]
+                    state["session"] = session
 
             def run():
                 try:
                     report = execute_case(case, runtime, mode=mode, description=description,
-                                          on_session=lambda session: state.update(session=session))
+                                          on_session=attach_session, budget_ledger=ledger)
                     with lock:
                         state["report"] = report
                 except Exception as exc:

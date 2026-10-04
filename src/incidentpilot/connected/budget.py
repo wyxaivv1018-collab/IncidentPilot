@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import json
+import math
+from contextlib import contextmanager
 import sqlite3
 from pathlib import Path
 from uuid import uuid4
@@ -33,22 +35,84 @@ def estimate_request(request: dict) -> tuple[int, float]:
 
 
 class BudgetLedger:
-    def __init__(self, path: Path, *, limit_usd: float = 0.80):
+    def __init__(self, path: Path, *, limit_usd: float = 0.80, allow_create: bool = True):
         if not 0 < limit_usd <= 1:
             raise ValueError("Budget must be positive and at most the authorized $1")
-        self.path = path
-        path.parent.mkdir(parents=True, exist_ok=True)
-        with self._db() as db:
-            db.execute("CREATE TABLE IF NOT EXISTS config (id INTEGER PRIMARY KEY, ceiling REAL)")
-            db.execute("INSERT OR IGNORE INTO config VALUES (1, ?)", (limit_usd,))
+        self.path = Path(path).resolve()
+        created = False
+        if allow_create:
+            self.path.parent.mkdir(parents=True, exist_ok=True)
+            try:
+                # Only a genuinely new ledger may receive an initial budget.
+                with self.path.open("xb"):
+                    pass
+                created = True
+            except FileExistsError:
+                pass
+        with self._db(initialize=created) as db:
+            if created:
+                db.execute("CREATE TABLE config (id INTEGER PRIMARY KEY, ceiling REAL)")
+                db.execute("INSERT INTO config VALUES (1, ?)", (limit_usd,))
+                db.execute("""CREATE TABLE calls (
+                    id TEXT PRIMARY KEY, run_id TEXT, upper_usd REAL, actual_usd REAL,
+                    input_tokens INTEGER, output_tokens INTEGER, state TEXT)""")
             # A later launch cannot silently raise an already frozen budget ceiling.
             db.execute("UPDATE config SET ceiling = MIN(ceiling, ?) WHERE id=1", (limit_usd,))
-            db.execute("""CREATE TABLE IF NOT EXISTS calls (
-                id TEXT PRIMARY KEY, run_id TEXT, upper_usd REAL, actual_usd REAL,
-                input_tokens INTEGER, output_tokens INTEGER, state TEXT)""")
 
-    def _db(self):
-        return sqlite3.connect(self.path, timeout=10)
+    @staticmethod
+    def _validate(db):
+        def amount(value, maximum=None):
+            return (type(value) in (int, float) and math.isfinite(value) and value >= 0
+                    and (maximum is None or value <= maximum))
+
+        expected = {
+            "config": {"id", "ceiling"},
+            "calls": {"id", "run_id", "upper_usd", "actual_usd", "input_tokens",
+                      "output_tokens", "state"},
+        }
+        try:
+            for table, columns in expected.items():
+                schema = list(db.execute(f"PRAGMA table_info({table})"))
+                if ({column[1] for column in schema} != columns
+                        or not any(column[1] == "id" and column[5] == 1 for column in schema)):
+                    raise BudgetBlocked("BUDGET_STORAGE_INVALID")
+            config = db.execute("SELECT id, ceiling FROM config").fetchall()
+            if len(config) != 1 or config[0][0] != 1 or not amount(config[0][1], 1):
+                raise BudgetBlocked("BUDGET_STORAGE_INVALID")
+            rows = db.execute("SELECT id, run_id, upper_usd, actual_usd, input_tokens, "
+                              "output_tokens, state FROM calls")
+            for request_id, run_id, upper, actual, inputs, outputs, state in rows:
+                if (not isinstance(request_id, str) or not request_id
+                        or not isinstance(run_id, str) or not run_id
+                        or not amount(upper, 0.05) or upper == 0
+                        or (actual is not None and not amount(actual))
+                        or state not in {"reserved", "usage-received"}
+                        or (state == "reserved" and any(value is not None
+                                                       for value in (actual, inputs, outputs)))
+                        or (state == "usage-received" and (actual is None
+                            or any(type(value) is not int or value < 0
+                                   for value in (inputs, outputs))))):
+                    raise BudgetBlocked("BUDGET_STORAGE_INVALID")
+        except sqlite3.Error:
+            raise BudgetBlocked("BUDGET_STORAGE_INVALID") from None
+
+    @contextmanager
+    def _db(self, *, initialize=False):
+        db = None
+        try:
+            if not self.path.is_file():
+                raise BudgetBlocked("BUDGET_STORAGE_MISSING")
+            # mode=rw never recreates a ledger lost after startup or between requests.
+            db = sqlite3.connect(self.path.as_uri() + "?mode=rw", uri=True, timeout=10)
+            with db:
+                if not initialize:
+                    self._validate(db)
+                yield db
+        except (sqlite3.Error, OSError):
+            raise BudgetBlocked("BUDGET_STORAGE_UNAVAILABLE") from None
+        finally:
+            if db is not None:
+                db.close()
 
     def reserve(self, run_id: str, upper_usd: float) -> str:
         if not 0 < upper_usd <= 0.05:

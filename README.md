@@ -31,8 +31,9 @@ Windows user environment. Services run only while the launcher is running.
 ## Validate
 
 ```sh
-uv run --frozen pytest -q tests/unit/test_connected.py tests/api/test_connected_server.py
-uv run --frozen ruff check src/incidentpilot/connected tests/unit/test_connected.py tests/api/test_connected_server.py
+uv run --frozen pytest -q
+uv run --frozen ruff check src/incidentpilot/connected tests
+node --test tests/ui/connected.test.mjs
 ```
 
 Six CLI real-model cases passed: four recoveries and two permission/evidence handoffs.
@@ -49,6 +50,10 @@ Source is MIT licensed. The public candidate contains application source and foc
 tests; internal coordination, credentials, developer caches and unrelated runtime are excluded.
 The complete internal test suite remains in the development workspace.
 
-Public hosting, free judge access through the judging period and YouTube publication remain
-pending account arrangements. Local developer key setup is not the judge-access plan.
-No Devpost submission has been made. Final submission is assigned to Grokbot by the owner.
+The project was submitted to the Nebius x NVIDIA Global AI Hackathon on September 30, 2026
+(submission 1174683). See [submission links and status](docs/nebius/SUBMISSION.md).
+
+Public live deployments must use a persistent mounted data directory and an explicitly
+initialized budget ledger. A missing or invalid ledger stops startup instead of resetting
+the spending allowance. See [persistent storage setup](deploy/render/PERSISTENT-STORAGE.md).
+Local development keeps its existing runtime directory by default.

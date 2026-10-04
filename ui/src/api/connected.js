@@ -1,5 +1,6 @@
 const $ = (id) => document.getElementById(id);
 let config, timer, lastReport, recorded = false, lang = "en", downloadUrl;
+let submissionError = null, cancelRequested = false, runToken = 0;
 const text = (en, zh) => lang === "en" ? en : zh;
 async function api(path, body) {
   const response = await fetch("/api/v2/" + path, body === undefined ? {} : {
@@ -22,6 +23,11 @@ function modeNote() {
   $("mode-note").textContent = $("mode").value === "live"
     ? text("Live model decisions; operations affect real, owned local test services.", "模型实时调查和选择工具；操作会实际影响本地测试服务。")
     : text("Fixed SOP on real test services. No model calls; this does not validate AI decisions.", "固定步骤操作真实测试服务，不调用模型，不能证明 AI 调查能力。") ;
+}
+function setBusy(busy) {
+  for (const id of ["system", "case", "description", "mode"]) $(id).disabled = busy;
+  $("start").disabled = busy;
+  $("cancel").disabled = !busy || cancelRequested;
 }
 function renderBudget(budget) {
   $("budget").textContent = `Estimated $${budget.estimated_usd.toFixed(5)} · Unconfirmed ≤ $${budget.unconfirmed_upper_usd.toFixed(5)} · Cap $${budget.ceiling_usd.toFixed(2)}`;
@@ -80,14 +86,22 @@ async function poll() {
   try {
     const state = await api("run"); renderBudget(state.budget);
     renderEvents(state.events);
+    setBusy(state.busy);
     if (state.busy) {
+      recorded = false;
+      if (["live", "offline-test"].includes(state.mode)) {
+        $("mode").value = state.mode; modeNote();
+      }
       $("status").textContent = text("Investigating the running test service…", "正在调查实际运行的测试服务……");
-      $("run-badge").textContent = $("mode").value === "live" ? "LIVE" : "OFFLINE TEST";
+      $("run-badge").textContent = state.mode === "live" ? "LIVE" : state.mode === "offline-test" ? "OFFLINE TEST" : "RUNNING";
+      delete $("run-badge").dataset.state;
       timer = setTimeout(poll, 800);
     } else {
-      $("start").disabled = false; $("cancel").disabled = true;
+      runToken += 1; cancelRequested = false;
       if (state.report) renderReport(state.report);
-      else if (state.error) $("status").textContent = state.error;
+      else if (state.error || submissionError) $("status").textContent = state.error || submissionError;
+      else $("status").textContent = text("Choose a system and describe the symptom to begin.", "选择系统并描述故障，开始调查。");
+      submissionError = null;
       await history();
     }
   } catch (error) {
@@ -96,16 +110,25 @@ async function poll() {
   }
 }
 $("investigation-form").addEventListener("submit", async (event) => {
-  event.preventDefault(); clearTimeout(timer); recorded = false;
-  $("start").disabled = true; $("cancel").disabled = false; $("download").hidden = true;
+  event.preventDefault(); clearTimeout(timer); recorded = false; runToken += 1;
+  submissionError = null; cancelRequested = false; setBusy(true);
+  $("download").hidden = true;
   $("answer-cards").replaceChildren(); lastReport = null;
   document.querySelectorAll(".connected-progress li").forEach((item, i) => item.classList.toggle("active", i === 0));
   try {
     await api("run", {case: $("case").value, mode: $("mode").value, description: $("description").value});
     await poll();
-  } catch (error) { $("status").textContent = error.message; $("start").disabled = false; $("cancel").disabled = true; }
+  } catch (error) {
+    submissionError = error.message;
+    await poll();
+  }
 });
-$("cancel").addEventListener("click", async () => { await api("cancel", {}); $("cancel").disabled = true; });
+$("cancel").addEventListener("click", async () => {
+  const requestRunToken = runToken;
+  await api("cancel", {});
+  if (requestRunToken !== runToken) return;
+  cancelRequested = true; $("cancel").disabled = true;
+});
 $("system").addEventListener("change", setCases);
 $("case").addEventListener("change", () => { $("description").value = config.cases[$("case").value].description; });
 $("mode").addEventListener("change", modeNote);
@@ -116,12 +139,12 @@ $("language").addEventListener("click", () => {
   if (lastReport) renderReport(lastReport);
 });
 try {
+  setBusy(true); $("cancel").disabled = true;
   config = await api("config"); setCases();
   if (!config.allow_live || !config.key_present) {
     $("mode").value = "offline-test"; $("mode").options[0].disabled = true;
   }
   $("configuration").textContent = `${config.model} · Key ${config.key_present ? "available" : "missing"}`;
   modeNote(); renderBudget(config.budget); await history();
-  const state = await api("run");
-  if (state.busy) { $("start").disabled = true; $("cancel").disabled = false; await poll(); }
+  await poll();
 } catch (error) { $("status").textContent = error.message; $("start").disabled = true; }

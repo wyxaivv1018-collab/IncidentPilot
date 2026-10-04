@@ -26,7 +26,7 @@ powershell -NoProfile -File scripts/run_nebius.ps1 -Live
 Other platforms (environment variable already supplied externally):
 
 ```sh
-uv run --frozen --with 'strands-agents[openai]==1.36.0' python scripts/run_nebius.py serve --live
+uv run --frozen --with-requirements docs/nebius/runtime-requirements.txt python scripts/run_nebius.py serve --live
 ```
 
 The provider is fixed to Nebius/Nemotron, with no fallback. SDK HTTP retries and agent retries
@@ -45,7 +45,7 @@ Offline checks for the public release (no model charges):
 ```sh
 uv run --frozen pytest -q tests/unit/test_connected.py tests/api/test_connected_server.py
 uv run --frozen ruff check src/incidentpilot/connected tests/unit/test_connected.py tests/api/test_connected_server.py
-uv run --frozen --with 'strands-agents[openai]==1.36.0' python scripts/nebius_sdk_check.py
+uv run --frozen --with-requirements docs/nebius/runtime-requirements.txt python scripts/nebius_sdk_check.py
 uv run --frozen python scripts/run_nebius.py compare
 # With the local server running:
 node scripts/nebius_browser_check.mjs
@@ -60,8 +60,8 @@ Paid commands, only within the existing authorized balance:
 
 ```sh
 uv run --frozen python scripts/nebius_preflight.py
-uv run --frozen --with 'strands-agents[openai]==1.36.0' python scripts/run_nebius.py run --live --case http-stopped
-uv run --frozen --with 'strands-agents[openai]==1.36.0' python scripts/run_nebius.py compare --live
+uv run --frozen --with-requirements docs/nebius/runtime-requirements.txt python scripts/run_nebius.py run --live --case http-stopped
+uv run --frozen --with-requirements docs/nebius/runtime-requirements.txt python scripts/run_nebius.py compare --live
 uv run --frozen python scripts/nebius_acceptance.py
 ```
 
@@ -74,6 +74,7 @@ SDK mock evidence is kept separately under `runtime/nebius/sdk-offline/` and is 
 Historical C11 and earlier v1 artifacts remain in their original locations. The old UI is
 available at `/index.html?mode=recorded`; new report history is explicitly marked RECORDED.
 
-This local build is not yet a compliant public judge-access arrangement: its optional live
-setup requires the owner's valid credit and key. A free publicly accessible owner-funded
-live service/test arrangement lasting through December 15 must be supplied before submission.
+The project has been submitted; current published links are in SUBMISSION.md.
+Public live hosting requires INCIDENTPILOT_DATA_DIR to name a persistent mounted directory
+with an explicitly initialized budget ledger. See ../../deploy/render/PERSISTENT-STORAGE.md.
+Local setup remains optional and does not replace the published judge-access service.

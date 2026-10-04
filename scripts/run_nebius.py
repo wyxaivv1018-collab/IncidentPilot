@@ -6,6 +6,7 @@ from pathlib import Path
 
 from incidentpilot.connected.connectors import CASES
 from incidentpilot.connected.runner import compare, execute_case
+from incidentpilot.connected.storage import resolve_runtime
 
 
 def main():
@@ -27,7 +28,7 @@ def main():
     )
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[1]
-    runtime = root / "runtime" / "nebius"
+    runtime = resolve_runtime(root)
     if args.command == "serve":
         from incidentpilot.connected.server import serve
         # None keeps env-based public mode available when the flag is omitted.

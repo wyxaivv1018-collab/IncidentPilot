@@ -32,7 +32,7 @@ def run_sop(session: ConnectedSession):
 
 def execute_case(case: str, root: Path, *, method: str = "incidentpilot",
                  mode: str = "live", description: str | None = None,
-                 on_session=None):
+                 on_session=None, budget_ledger: BudgetLedger | None = None):
     if case not in CASES or method not in {"incidentpilot", "generic", "sop"}:
         raise ValueError("Unknown case or comparison method")
     if mode not in {"live", "offline-test"}:
@@ -47,10 +47,17 @@ def execute_case(case: str, root: Path, *, method: str = "incidentpilot",
         if on_session:
             on_session(session)
         if method == "sop" or mode == "offline-test":
-            result = run_sop(session)
+            try:
+                result = run_sop(session)
+            except Exception as exc:
+                # Preserve the interrupted run without exposing exception payloads.
+                error = "CANCELLED" if session.cancelled else type(exc).__name__
+                session.emit("run.error", {"category": error})
+                result = session.report(error=error)
         else:
             result = run_agent(session, description or spec["description"],
-                               BudgetLedger(root / "budget.sqlite"))
+                               budget_ledger if budget_ledger is not None
+                               else BudgetLedger(root / "budget.sqlite"))
         return result
     finally:
         connector.close()

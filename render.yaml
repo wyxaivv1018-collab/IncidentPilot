@@ -1,3 +1,5 @@
+# Historical free-service template. Do not apply for public live mode.
+# See deploy/render/PERSISTENT-STORAGE.md for the required mounted-store migration.
 services:
   - type: web
     name: incidentpilot-judge
